@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Una dedicatoria romántica interactiva para Nancy">
     <title>Para mi hermosa esposa Nancy ❤️</title>
     <style>
         :root {
@@ -33,7 +34,7 @@
             user-select: none;
             pointer-events: none;
             animation: subir linear forwards;
-            opacity: .80;
+            opacity: 0.80;
             text-shadow: 0 0 10px rgba(255,255,255,.8);
             z-index: 1;
             bottom: -50px;
@@ -203,6 +204,10 @@
             cursor: not-allowed;
         }
 
+        .nav-buttons button:hover:not(:disabled) {
+            background-color: #ff1744;
+        }
+
         /* --- SELLO DE CORAZÓN --- */
         .heart-seal {
             position: absolute;
@@ -301,15 +306,18 @@
                     </div>
                 </div>
             </div>
-            
         </div>
     </div>
 
     <script>
         // --- EFECTO DE EMOJIS FLOTANTES ---
         const emojis = ["❤️","💖","💕","💗","💞","👶","🍼","🧸","👣","🌸","✨","🐥"];
+        let floatingCount = 0;
+        const MAX_FLOATING = 15; // Limitar elementos flotantes para mejor rendimiento
 
-        function crearFigura(){
+        function crearFigura() {
+            if (floatingCount >= MAX_FLOATING) return;
+            
             const figura = document.createElement("div");
             figura.className = "flotante";
             figura.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
@@ -318,16 +326,17 @@
             figura.style.fontSize = (22 + Math.random() * 28) + "px";
             figura.style.animationDuration = (6 + Math.random() * 6) + "s";
 
+            floatingCount++;
             document.body.appendChild(figura);
 
             figura.addEventListener("animationend", () => {
                 figura.remove();
+                floatingCount--;
             });
         }
-        setInterval(crearFigura, 200);
-            <!-- ... Aquí termina el código del sobre y la carta ... -->
 
-    <script>
+        setInterval(crearFigura, 200);
+
         // --- INTERACCIÓN DEL SOBRE ---
         const sobre = document.getElementById('sobre');
         sobre.addEventListener('click', () => {
