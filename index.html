@@ -325,3 +325,33 @@
             });
         }
         setInterval(crearFigura, 200);
+            <!-- ... Aquí termina el código del sobre y la carta ... -->
+
+    <script>
+        // --- INTERACCIÓN DEL SOBRE ---
+        const sobre = document.getElementById('sobre');
+        sobre.addEventListener('click', () => {
+            sobre.classList.add('open');
+        });
+
+        // --- SISTEMA DE PÁGINAS DE LA CARTA ---
+        let paginaActual = 1;
+        const totalPaginas = 3;
+
+        function cambiarPagina(direccion) {
+            // Ocultar página actual
+            document.getElementById(`p${paginaActual}`).classList.remove('active');
+            
+            // Calcular nueva página
+            paginaActual += direccion;
+            
+            // Mostrar nueva página
+            document.getElementById(`p${paginaActual}`).classList.add('active');
+            
+            // Controlar estado de botones
+            document.getElementById('btnPrev').disabled = (paginaActual === 1);
+            document.getElementById('btnNext').disabled = (paginaActual === totalPaginas);
+        }
+    </script>
+</body>
+</html>
