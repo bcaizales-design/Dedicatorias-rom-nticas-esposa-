@@ -368,9 +368,64 @@
         .music-control:hover {
             background-color: rgba(255, 77, 109, 1);
         }
+
+        /* --- OVERLAY INICIAL --- */
+        .music-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .overlay-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .overlay-content h2 {
+            color: #590d22;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .overlay-content button {
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .overlay-content button:hover {
+            background-color: #ff1744;
+        }
+
+        .overlay-content.hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
+
+    <!-- OVERLAY INICIAL PARA INICIAR MÚSICA -->
+    <div class="music-overlay" id="musicOverlay">
+        <div class="overlay-content">
+            <h2>🎵 ¡Abre el sobre con música! 🎵</h2>
+            <button onclick="iniciarMusica()">Presiona para empezar</button>
+        </div>
+    </div>
 
     <!-- FONDO DE GALAXIA -->
     <div class="starfield" id="starfield"></div>
@@ -385,8 +440,8 @@
     <button class="music-control" id="musicToggle">🎵 Música: ON</button>
 
     <!-- AUDIO -->
-    <audio id="backgroundMusic" loop autoplay>
-        <source src="https://assets.mixkit.co/active_storage/musics/528-628-preview.mp3" type="audio/mpeg">
+    <audio id="backgroundMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
     </audio>
 
     <!-- CONTENEDOR DEL SOBRE -->
@@ -415,9 +470,9 @@
                         <div class="page" id="p3">
                             <p>Te amo con todo mi corazón, hoy, mañana y para siempre. <br><br> <span class="firma-pollo">🐥 Tu pollo</span></p>
                         </div>
-                    </div>
-                     <!-- Página 4 -->
-                        <div class="page" id="p3">
+
+                        <!-- Página 4 -->
+                        <div class="page" id="p4">
                             <p> besoteeess nalgona. <br><br> <span class="firma-pollo">🐥 Tu pollo</span></p>
                         </div>
                     </div>
@@ -454,14 +509,20 @@
         // --- CONTROL DE MÚSICA ---
         const audio = document.getElementById('backgroundMusic');
         const musicToggle = document.getElementById('musicToggle');
-        let musicaActiva = true;
+        const musicOverlay = document.getElementById('musicOverlay');
+        let musicaActiva = false;
 
-        // Intentar reproducir automáticamente
-        audio.play().catch(function(error) {
-            // Si el navegador bloquea la reproducción automática, solo cambiar el estado
-            musicaActiva = false;
-            musicToggle.textContent = '🎵 Música: OFF';
-        });
+        function iniciarMusica() {
+            musicaActiva = true;
+            audio.play().then(() => {
+                musicToggle.textContent = '🎵 Música: ON';
+                musicOverlay.classList.add('hidden');
+            }).catch(function(error) {
+                console.log('Error reproduciendo música:', error);
+                musicaActiva = false;
+                musicToggle.textContent = '🎵 Música: OFF';
+            });
+        }
 
         musicToggle.addEventListener('click', () => {
             if (musicaActiva) {
@@ -510,7 +571,7 @@
 
         // --- SISTEMA DE PÁGINAS DE LA CARTA ---
         let paginaActual = 1;
-        const totalPaginas = 3;
+        const totalPaginas = 4;
 
         function cambiarPagina(direccion) {
             document.getElementById(`p${paginaActual}`).classList.remove('active');
