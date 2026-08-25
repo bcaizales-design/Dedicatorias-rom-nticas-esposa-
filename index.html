@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Esposa ❤️</title>
+<script>
+
+const emojis = [
+    "❤️","💖","💕","💗","💞",
+    "👶","🍼","🧸","👣","🌸","✨"
+];
+
+function crearFigura(){
+
+    const figura = document.createElement("div");
+    figura.className = "flotante";
+
+    figura.innerHTML = emojis[Math.floor(Math.random()*emojis.length)];
+
+    figura.style.left = Math.random()*100 + "vw";
+    figura.style.fontSize = (22 + Math.random()*28) + "px";
+    figura.style.animationDuration = (6 + Math.random()*6) + "s";
+
+    document.body.appendChild(figura);
+
+    figura.addEventListener("animationend",()=>{
+        figura.remove();
+    });
+
+}
+
+setInterval(crearFigura,180);
+
+</script>
+
+<style>
+.flotante{
+    position:absolute;
+    user-select:none;
+    pointer-events:none;
+    animation:subir linear forwards;
+    opacity:.80;
+    text-shadow:0 0 10px rgba(255,255,255,.8);
+}
+
+@keyframes subir{
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Alguien Especial</title>
+    <style>
+        :root {
+            --bg-color: #ffe5ec;
+            --env-color: #ffb3c1;
+            --env-dark: #ff85a1;
+            --env-flap: #ff758f;
+            --letter-bg: #fff0f3;
+            --text-color: #590d22;
+            --heart-color: #ff4d6d;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- LLUVIA DE CORAZONES --- */
+        .heart-particle {
+            position: absolute;
+            color: var(--heart-color);
+            font-size: 20px;
+            pointer-events: none;
+            z-index: 10;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-20px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* --- CONTENEDOR PRINCIPAL 3D --- */
+        .envelope-wrapper {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            cursor: pointer;
+            perspective: 1000px;
+        }
+
+        .envelope {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-color: var(--env-color);
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transition: transform 0.5s ease;
+        }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            z-index: 3;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-bottom: 100px solid var(--env-dark);
+            bottom: 0;
+            left: 0;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .envelope::after {
+            content: '';
+            position: absolute;
+            z-index: 3;
+            border-left: 150px solid var(--env-dark);
+            border-top: 100px solid transparent;
+            border-bottom: 100px solid transparent;
+            top: 0;
+            left: 0;
+            opacity: 0.9;
+        }
+
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid var(--env-flap);
+            transform-origin: top;
+            transition: transform 0.4s ease-in-out, z-index 0.2s ease-in-out;
+            z-index: 4;
+        }
+
+        /* --- LA CARTA SECRETA --- */
+        .letter {
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            width: 270px;
+            height: 180px;
+            background-color: var(--letter-bg);
+            padding: 15px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            z-index: 2;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), z-index 0.6s, height 0.6s;
+            overflow: hidden;
+        }
+
+        .letter-content {
+            color: var(--text-color);
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            transform: scale(0.95);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .letter h1 {
+            font-size: 18px;
+            margin: 0 0 5px 0;
+            border-bottom: 1px dashed var(--heart-color);
+            padding-bottom: 5px;
+        }
+
+        /* --- SISTEMA DE PÁGINAS --- */
+        .pages-container {
+            flex-grow: 1;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            font-size: 13px;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 6;
+        }
+
+        .nav-buttons button {
+            background-color: var(--heart-color);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: sans-serif;
+            font-size: 11px;
+            transition: background 0.2s;
+        }
+
+        .nav-buttons button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        /* --- SELLO DE CORAZÓN --- */
+        .heart-seal {
+            position: absolute;
+            top: 85px;
+            left: 137px;
+            width: 25px;
+            height: 25px;
+            background-color: var(--heart-color);
+            transform: rotate(-45deg);
+            z-index: 5;
+            transition: transform 0.4s, opacity 0.4s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .heart-seal::before, .heart-seal::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: var(--heart-color);
+            border-radius: 50%;
+        }
+
+        .heart-seal::before { top: -12.5px; left: 0; }
+        .heart-seal::after { left: 12.5px; top: 0; }
+
+        /* --- ESTADOS ACTIVOS --- */
+        .envelope-wrapper.open .flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope-wrapper.open .heart-seal {
+            transform: translateY(-50px) rotate(-45deg) scale(0);
+            opacity: 0;
+        }
+
+        .envelope-wrapper.open .letter {
+            transform: translateY(-160px) scale(1.05);
+            z-index: 5;
+            height: 280px; /* Altura extendida para las páginas */
+        }
+
+        .envelope-wrapper.open .letter-content {
+            opacity: 1;
+            transform: scale(1);
+            transition-delay: 0.4s;
+        }
+
+        .envelope-wrapper.open .envelope {
+            transform: translateY(60px);
+        }
+
+        /* Ocultar el iframe de música */
+        #music-player {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- REPRODUCTOR DE MÚSICA DE FONDO (YouTube Oculto) -->
+    <!-- Puedes cambiar el ID "dQw4w9WgXcQ" por cualquier código de video musical de YouTube -->
+    <iframe id="music-player" src="https://youtube.com" allow="autoplay"></iframe>
+
+    <div class="envelope-wrapper" id="envelopeWrapper">
+        <div class="flap"></div>
+        <div class="heart-seal"></div>
+        <div class="envelope">
+            <div class="letter">
+                <div class="letter-content" id="letterContent">
+                    <h1>Para mi persona favorita</h1>
+                    
+                    <!-- Páginas de la carta -->
+                    <div class="pages-container">
+                        <div class="page active" data-page="1">
+                            Hoy solo quería recordarte lo importante que eres para mí. Gracias por cada sonrisa, por tu infinita paciencia y por hacer mi mundo un lugar mucho más brillante.
+                        </div>
+                        <div class="page" data-page="2">
+                            Cada momento compartido a tu lado se convierte en un recuerdo hermoso. Valoro tu apoyo incondicional y la forma tan única en la que sabes hacerme feliz.
+                        </div>
+                        <div class="page" data-page="3">
+                            Gracias por ser mi refugio, mi cómplice y mi alegría de todos los días. Espero poder seguir sumando capítulos a esta hermosa historia juntos. Con amor, siempre. ❤️
+                        </div>
+                    </div>
+
+                    <!-- Botones de navegación -->
+                    <div class="nav-buttons">
+                        <button id="prevBtn" disabled>Anterior</button>
+                        <span id="pageIndicator" style="font-size: 11px; color: var(--text-color);">1 / 3</span>
+                        <button id="nextBtn">Siguiente</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const wrapper = document.getElementById('envelopeWrapper');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const pageIndicator = document.getElementById('pageIndicator');
+        const pages = document.querySelectorAll('.page');
+        const letterContent = document.getElementById('letterContent');
+        
+        let currentPage = 1;
+        const totalPages = pages.length;
+        let isOpen = false;
+        let heartInterval;
+
+        // --- APERTURA DEL SOBRE Y ACTIVACIÓN DE EFECTOS ---
+        wrapper.addEventListener('click', (e) => {
+            // Evitar que la carta se cierre si se hace clic en los botones de navegación
+            if (e.target.tagName === 'BUTTON') return;
+
+            wrapper.classList.toggle('open');
+            isOpen = wrapper.classList.contains('open');
+
