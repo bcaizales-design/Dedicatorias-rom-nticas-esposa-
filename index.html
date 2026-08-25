@@ -1,56 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Para Esposa ❤️</title>
-<script>
-
-const emojis = [
-    "❤️","💖","💕","💗","💞",
-    "👶","🍼","🧸","👣","🌸","✨"
-];
-
-function crearFigura(){
-
-    const figura = document.createElement("div");
-    figura.className = "flotante";
-
-    figura.innerHTML = emojis[Math.floor(Math.random()*emojis.length)];
-
-    figura.style.left = Math.random()*100 + "vw";
-    figura.style.fontSize = (22 + Math.random()*28) + "px";
-    figura.style.animationDuration = (6 + Math.random()*6) + "s";
-
-    document.body.appendChild(figura);
-
-    figura.addEventListener("animationend",()=>{
-        figura.remove();
-    });
-
-}
-
-setInterval(crearFigura,180);
-
-</script>
-
-<style>
-.flotante{
-    position:absolute;
-    user-select:none;
-    pointer-events:none;
-    animation:subir linear forwards;
-    opacity:.80;
-    text-shadow:0 0 10px rgba(255,255,255,.8);
-}
-
-@keyframes subir{
-  <!DOCTYPE html>
-<html lang="es">
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Alguien Especial</title>
+    <title>Para mi hermosa esposa Nancy ❤️</title>
     <style>
         :root {
             --bg-color: #ffe5ec;
@@ -74,23 +27,28 @@ setInterval(crearFigura,180);
             position: relative;
         }
 
-        /* --- LLUVIA DE CORAZONES --- */
-        .heart-particle {
+        /* --- LLUVIA DE EMOJIS FLOTANTES --- */
+        .flotante {
             position: absolute;
-            color: var(--heart-color);
-            font-size: 20px;
+            user-select: none;
             pointer-events: none;
-            z-index: 10;
-            animation: fall linear forwards;
+            animation: subir linear forwards;
+            opacity: .80;
+            text-shadow: 0 0 10px rgba(255,255,255,.8);
+            z-index: 1;
+            bottom: -50px;
         }
 
-        @keyframes fall {
+        @keyframes subir {
             0% {
-                transform: translateY(-20px) rotate(0deg);
-                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
             }
             100% {
-                transform: translateY(100vh) rotate(360deg);
+                transform: translateY(-105vh) rotate(360deg);
                 opacity: 0;
             }
         }
@@ -102,6 +60,7 @@ setInterval(crearFigura,180);
             height: 200px;
             cursor: pointer;
             perspective: 1000px;
+            z-index: 5;
         }
 
         .envelope {
@@ -182,10 +141,11 @@ setInterval(crearFigura,180);
         }
 
         .letter h1 {
-            font-size: 18px;
+            font-size: 16px;
             margin: 0 0 5px 0;
             border-bottom: 1px dashed var(--heart-color);
             padding-bottom: 5px;
+            color: #c9184a;
         }
 
         /* --- SISTEMA DE PÁGINAS --- */
@@ -193,6 +153,7 @@ setInterval(crearFigura,180);
             flex-grow: 1;
             position: relative;
             margin-bottom: 10px;
+            margin-top: 5px;
         }
 
         .page {
@@ -207,8 +168,10 @@ setInterval(crearFigura,180);
             font-size: 13px;
             line-height: 1.4;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            font-weight: 500;
         }
 
         .page.active {
@@ -278,9 +241,9 @@ setInterval(crearFigura,180);
         }
 
         .envelope-wrapper.open .letter {
-            transform: translateY(-160px) scale(1.05);
+            transform: translateY(-140px) scale(1.05);
             z-index: 5;
-            height: 280px; /* Altura extendida para las páginas */
+            height: 290px; 
         }
 
         .envelope-wrapper.open .letter-content {
@@ -290,71 +253,75 @@ setInterval(crearFigura,180);
         }
 
         .envelope-wrapper.open .envelope {
-            transform: translateY(60px);
+            transform: translateY(70px);
         }
 
-        /* Ocultar el iframe de música */
-        #music-player {
-            display: none;
+        .firma-pollo {
+            font-size: 12px;
+            font-weight: bold;
+            color: #ff4d6d;
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
 
-    <!-- REPRODUCTOR DE MÚSICA DE FONDO (YouTube Oculto) -->
-    <!-- Puedes cambiar el ID "dQw4w9WgXcQ" por cualquier código de video musical de YouTube -->
-    <iframe id="music-player" src="https://youtube.com" allow="autoplay"></iframe>
-
-    <div class="envelope-wrapper" id="envelopeWrapper">
-        <div class="flap"></div>
+    <!-- CONTENEDOR DEL SOBRE -->
+    <div class="envelope-wrapper" id="sobre">
         <div class="heart-seal"></div>
         <div class="envelope">
+            <div class="flap"></div>
+            
+            <!-- CARTA CON CONTENIDO DE PÁGINAS -->
             <div class="letter">
-                <div class="letter-content" id="letterContent">
-                    <h1>Para mi persona favorita</h1>
+                <div class="letter-content">
+                    <h1>Para mi hermosa esposa Nancy 💖</h1>
                     
-                    <!-- Páginas de la carta -->
                     <div class="pages-container">
-                        <div class="page active" data-page="1">
-                            Hoy solo quería recordarte lo importante que eres para mí. Gracias por cada sonrisa, por tu infinita paciencia y por hacer mi mundo un lugar mucho más brillante.
+                        <!-- Página 1 -->
+                        <div class="page active" id="p1">
+                            <p>Cada línea de este código fue escrita pensando en ti, en nuestro hermoso camino juntos y en la hermosa familia que construimos. 🌸</p>
                         </div>
-                        <div class="page" data-page="2">
-                            Cada momento compartido a tu lado se convierte en un recuerdo hermoso. Valoro tu apoyo incondicional y la forma tan única en la que sabes hacerme feliz.
+                        
+                        <!-- Página 2 -->
+                        <div class="page" id="p2">
+                            <p>Gracias por ser mi compañera incondicional, por llenar mis días de alegría y por amarme tanto. ¡Eres mi mundo entero! ✨</p>
                         </div>
-                        <div class="page" data-page="3">
-                            Gracias por ser mi refugio, mi cómplice y mi alegría de todos los días. Espero poder seguir sumando capítulos a esta hermosa historia juntos. Con amor, siempre. ❤️
+                        
+                        <!-- Página 3 -->
+                        <div class="page" id="p3">
+                            <p>Te amo con todo mi corazón, hoy, mañana y para siempre. <br><br> <span class="firma-pollo">🐥 Tu pollo</span></p>
                         </div>
                     </div>
 
                     <!-- Botones de navegación -->
                     <div class="nav-buttons">
-                        <button id="prevBtn" disabled>Anterior</button>
-                        <span id="pageIndicator" style="font-size: 11px; color: var(--text-color);">1 / 3</span>
-                        <button id="nextBtn">Siguiente</button>
+                        <button id="btnPrev" disabled onclick="cambiarPagina(-1); event.stopPropagation();">◀ Ant</button>
+                        <button id="btnNext" onclick="cambiarPagina(1); event.stopPropagation();">Sig ▶</button>
                     </div>
                 </div>
             </div>
+            
         </div>
     </div>
 
     <script>
-        const wrapper = document.getElementById('envelopeWrapper');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const pageIndicator = document.getElementById('pageIndicator');
-        const pages = document.querySelectorAll('.page');
-        const letterContent = document.getElementById('letterContent');
-        
-        let currentPage = 1;
-        const totalPages = pages.length;
-        let isOpen = false;
-        let heartInterval;
+        // --- EFECTO DE EMOJIS FLOTANTES ---
+        const emojis = ["❤️","💖","💕","💗","💞","👶","🍼","🧸","👣","🌸","✨","🐥"];
 
-        // --- APERTURA DEL SOBRE Y ACTIVACIÓN DE EFECTOS ---
-        wrapper.addEventListener('click', (e) => {
-            // Evitar que la carta se cierre si se hace clic en los botones de navegación
-            if (e.target.tagName === 'BUTTON') return;
+        function crearFigura(){
+            const figura = document.createElement("div");
+            figura.className = "flotante";
+            figura.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
 
-            wrapper.classList.toggle('open');
-            isOpen = wrapper.classList.contains('open');
+            figura.style.left = Math.random() * 100 + "vw";
+            figura.style.fontSize = (22 + Math.random() * 28) + "px";
+            figura.style.animationDuration = (6 + Math.random() * 6) + "s";
 
+            document.body.appendChild(figura);
+
+            figura.addEventListener("animationend", () => {
+                figura.remove();
+            });
+        }
+        setInterval(crearFigura, 200);
