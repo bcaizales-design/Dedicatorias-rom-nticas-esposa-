@@ -17,7 +17,7 @@
         }
 
         body {
-            background-color: var(--bg-color);
+            background: linear-gradient(135deg, #0a0e27 0%, #16213e 25%, #0f3460 50%, #16213e 75%, #0a0e27 100%);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -28,6 +28,86 @@
             position: relative;
         }
 
+        /* --- FONDO DE GALAXIA CON ESTRELLAS --- */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* --- NEBULOSA ANIMADA --- */
+        .nebula {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 20% 50%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 80%, rgba(0, 191, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(ellipse at 40% 20%, rgba(199, 21, 133, 0.08) 0%, transparent 50%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* --- PLANETAS FLOTANTES --- */
+        .planet {
+            position: fixed;
+            border-radius: 50%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .planet1 {
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle at 30% 30%, #ff6b35, #c41e3a);
+            top: 10%;
+            right: 5%;
+            box-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+            animation: flotar 8s ease-in-out infinite;
+        }
+
+        .planet2 {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at 35% 35%, #4a90e2, #1a3a52);
+            bottom: 15%;
+            left: 8%;
+            box-shadow: 0 0 25px rgba(74, 144, 226, 0.3);
+            animation: flotar 10s ease-in-out infinite reverse;
+        }
+
+        .planet3 {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle at 40% 40%, #f4a261, #e76f51);
+            top: 70%;
+            right: 15%;
+            box-shadow: 0 0 20px rgba(244, 162, 97, 0.3);
+            animation: flotar 12s ease-in-out infinite;
+        }
+
+        @keyframes flotar {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(30px); }
+        }
+
         /* --- LLUVIA DE EMOJIS FLOTANTES --- */
         .flotante {
             position: absolute;
@@ -36,7 +116,7 @@
             animation: subir linear forwards;
             opacity: 0.80;
             text-shadow: 0 0 10px rgba(255,255,255,.8);
-            z-index: 1;
+            z-index: 3;
             bottom: -50px;
         }
 
@@ -267,9 +347,47 @@
             color: #ff4d6d;
             margin-top: 5px;
         }
+
+        /* --- CONTROLES DE MÚSICA --- */
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+            background-color: rgba(255, 77, 109, 0.8);
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .music-control:hover {
+            background-color: rgba(255, 77, 109, 1);
+        }
     </style>
 </head>
 <body>
+
+    <!-- FONDO DE GALAXIA -->
+    <div class="starfield" id="starfield"></div>
+    <div class="nebula"></div>
+    
+    <!-- PLANETAS -->
+    <div class="planet planet1"></div>
+    <div class="planet planet2"></div>
+    <div class="planet planet3"></div>
+
+    <!-- CONTROL DE MÚSICA -->
+    <button class="music-control" id="musicToggle">🎵 Música: ON</button>
+
+    <!-- AUDIO -->
+    <audio id="backgroundMusic" loop>
+        <source src="https://assets.mixkit.co/active_storage/musics/528-628-preview.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- CONTENEDOR DEL SOBRE -->
     <div class="envelope-wrapper" id="sobre">
@@ -310,10 +428,45 @@
     </div>
 
     <script>
+        // --- CREAR FONDO DE ESTRELLAS ---
+        function crearEstrellas() {
+            const starfield = document.getElementById('starfield');
+            const numeroEstrellas = 200;
+            
+            for (let i = 0; i < numeroEstrellas; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = (Math.random() * 2 + 0.5) + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starfield.appendChild(star);
+            }
+        }
+        crearEstrellas();
+
+        // --- CONTROL DE MÚSICA ---
+        const audio = document.getElementById('backgroundMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        let musicaActiva = false;
+
+        musicToggle.addEventListener('click', () => {
+            if (musicaActiva) {
+                audio.pause();
+                musicToggle.textContent = '🎵 Música: OFF';
+                musicaActiva = false;
+            } else {
+                audio.play();
+                musicToggle.textContent = '🎵 Música: ON';
+                musicaActiva = true;
+            }
+        });
+
         // --- EFECTO DE EMOJIS FLOTANTES ---
         const emojis = ["❤️","💖","💕","💗","💞","👶","🍼","🧸","👣","🌸","✨","🐥"];
         let floatingCount = 0;
-        const MAX_FLOATING = 15; // Limitar elementos flotantes para mejor rendimiento
+        const MAX_FLOATING = 15;
 
         function crearFigura() {
             if (floatingCount >= MAX_FLOATING) return;
@@ -348,16 +501,9 @@
         const totalPaginas = 3;
 
         function cambiarPagina(direccion) {
-            // Ocultar página actual
             document.getElementById(`p${paginaActual}`).classList.remove('active');
-            
-            // Calcular nueva página
             paginaActual += direccion;
-            
-            // Mostrar nueva página
             document.getElementById(`p${paginaActual}`).classList.add('active');
-            
-            // Controlar estado de botones
             document.getElementById('btnPrev').disabled = (paginaActual === 1);
             document.getElementById('btnNext').disabled = (paginaActual === totalPaginas);
         }
