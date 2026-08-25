@@ -385,7 +385,7 @@
     <button class="music-control" id="musicToggle">🎵 Música: ON</button>
 
     <!-- AUDIO -->
-    <audio id="backgroundMusic" loop>
+    <audio id="backgroundMusic" loop autoplay>
         <source src="https://assets.mixkit.co/active_storage/musics/528-628-preview.mp3" type="audio/mpeg">
     </audio>
 
@@ -449,7 +449,14 @@
         // --- CONTROL DE MÚSICA ---
         const audio = document.getElementById('backgroundMusic');
         const musicToggle = document.getElementById('musicToggle');
-        let musicaActiva = false;
+        let musicaActiva = true;
+
+        // Intentar reproducir automáticamente
+        audio.play().catch(function(error) {
+            // Si el navegador bloquea la reproducción automática, solo cambiar el estado
+            musicaActiva = false;
+            musicToggle.textContent = '🎵 Música: OFF';
+        });
 
         musicToggle.addEventListener('click', () => {
             if (musicaActiva) {
