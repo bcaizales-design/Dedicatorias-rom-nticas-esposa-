@@ -259,6 +259,13 @@ function actualizarBotones() {
 }
 
 
+const btnPrev = document.getElementById('btnPrev');
+const btnNext = document.getElementById('btnNext');
+
+function actualizarBotones() {
+    if (btnPrev) btnPrev.disabled = (paginaActual === 1);
+    if (btnNext) btnNext.disabled = (paginaActual === totalPaginas);
+}
 function cambiarPagina(direccion) {
 
     const nuevaPagina = paginaActual + direccion;
@@ -267,16 +274,13 @@ function cambiarPagina(direccion) {
         return;
     }
 
-
     const paginaAnterior = document.getElementById(`p${paginaActual}`);
 
     if (paginaAnterior) {
         paginaAnterior.classList.remove("active");
     }
 
-
     paginaActual = nuevaPagina;
-
 
     const paginaNueva = document.getElementById(`p${paginaActual}`);
 
@@ -284,38 +288,6 @@ function cambiarPagina(direccion) {
         paginaNueva.classList.add("active");
     }
 
-
-    actualizarBotones();
-}
-
-
-// Hacer disponible para otros eventos
-window.cambiarPagina = cambiarPagina;
-
-
-if (btnPrev) {
-    btnPrev.addEventListener("click", (e) => {
-        e.stopPropagation();
-        cambiarPagina(-1);
-    });
-}
-
-
-if (btnNext) {
-    btnNext.addEventListener("click", (e) => {
-        e.stopPropagation();
-        cambiarPagina(1);
-    });
-}
-
-
-actualizarBotones();
-}
-    if (paginaActual < 1) paginaActual = 1;
-    if (paginaActual > totalPaginas) paginaActual = totalPaginas;
-
-    const current = document.getElementById(`p${paginaActual}`);
-    if (current) current.classList.add('active');
     actualizarBotones();
 }
 
