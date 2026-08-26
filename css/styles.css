@@ -17,18 +17,19 @@
 }
 
 .gallery-img {
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
     object-fit: cover;
     border-radius: 15px;
     cursor: pointer;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-.gallery-img:hover {
-    transform: scale(1.1);
+.gallery-img:hover,
+.gallery-img:active {
+    transform: scale(1.12);
 }
-
 
 /* VENTANA ZOOM */
 .image-viewer {
@@ -46,8 +47,10 @@
 }
 
 .image-viewer img {
-    max-width: 90%;
-    max-height: 90%;
+    width: auto;
+    max-width: 95%;
+    max-height: 85%;
+    object-fit: contain;
     border-radius: 20px;
     animation: zoomIn 0.4s ease;
 }
@@ -64,11 +67,11 @@
 
 @keyframes zoomIn {
     from {
-        transform: scale(0.5);
+        transform: scale(0.3) rotate(-10deg);
         opacity: 0;
     }
     to {
-        transform: scale(1);
+        transform: scale(1) rotate(0deg);
         opacity: 1;
     }
 }
