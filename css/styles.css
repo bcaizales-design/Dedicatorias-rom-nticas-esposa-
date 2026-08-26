@@ -1,0 +1,437 @@
+/* styles.css - extraído de index.html and refactored for accessibility and focus handling */
+:root {
+    --bg-color: #ffe5ec;
+    --env-color: #ffb3c1;
+    --env-dark: #ff85a1;
+    --env-flap: #ff758f;
+    --letter-bg: #fff0f3;
+    --text-color: #590d22;
+    --heart-color: #ff4d6d;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background: linear-gradient(135deg, #0a0e27 0%, #16213e 25%, #0f3460 50%, #16213e 75%, #0a0e27 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Georgia', serif;
+    overflow: hidden;
+    position: relative;
+    color: var(--text-color);
+}
+
+/* --- FONDO DE GALAXIA CON ESTRELLAS --- */
+.starfield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.star {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+/* --- NEBULOSA ANIMADA --- */
+.nebula {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at 20% 50%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(0, 191, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 20%, rgba(199, 21, 133, 0.08) 0%, transparent 50%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* --- PLANETAS FLOTANTES --- */
+.planet {
+    position: fixed;
+    border-radius: 50%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.planet1 {
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle at 30% 30%, #ff6b35, #c41e3a);
+    top: 10%;
+    right: 5%;
+    box-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+    animation: flotar 8s ease-in-out infinite;
+}
+
+.planet2 {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle at 35% 35%, #4a90e2, #1a3a52);
+    bottom: 15%;
+    left: 8%;
+    box-shadow: 0 0 25px rgba(74, 144, 226, 0.3);
+    animation: flotar 10s ease-in-out infinite reverse;
+}
+
+.planet3 {
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle at 40% 40%, #f4a261, #e76f51);
+    top: 70%;
+    right: 15%;
+    box-shadow: 0 0 20px rgba(244, 162, 97, 0.3);
+    animation: flotar 12s ease-in-out infinite;
+}
+
+@keyframes flotar {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(30px); }
+}
+
+/* --- LLUVIA DE EMOJIS FLOTANTES --- */
+.flotante {
+    position: absolute;
+    user-select: none;
+    pointer-events: none;
+    animation: subir linear forwards;
+    opacity: 0.80;
+    text-shadow: 0 0 10px rgba(255,255,255,.8);
+    z-index: 3;
+    bottom: -50px;
+}
+
+@keyframes subir {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(-105vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* --- CONTENEDOR PRINCIPAL 3D --- */
+.envelope-wrapper {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    cursor: pointer;
+    perspective: 1000px;
+    z-index: 5;
+}
+
+.envelope {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: var(--env-color);
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    transition: transform 0.5s ease;
+}
+
+.envelope::before {
+    content: '';
+    position: absolute;
+    z-index: 3;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-bottom: 100px solid var(--env-dark);
+    bottom: 0;
+    left: 0;
+    border-radius: 0 0 10px 10px;
+}
+
+.envelope::after {
+    content: '';
+    position: absolute;
+    z-index: 3;
+    border-left: 150px solid var(--env-dark);
+    border-top: 100px solid transparent;
+    border-bottom: 100px solid transparent;
+    top: 0;
+    left: 0;
+    opacity: 0.9;
+}
+
+.flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-top: 100px solid var(--env-flap);
+    transform-origin: top;
+    transition: transform 0.4s ease-in-out, z-index 0.2s ease-in-out;
+    z-index: 4;
+    cursor: pointer;
+}
+
+/* --- LA CARTA SECRETA --- */
+.letter {
+    position: absolute;
+    bottom: 10px;
+    left: 15px;
+    width: 270px;
+    height: 180px;
+    background-color: var(--letter-bg);
+    padding: 15px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    z-index: 2;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), z-index 0.6s, height 0.6s;
+    overflow: hidden;
+}
+
+.letter-content {
+    color: var(--text-color);
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    transform: scale(0.95);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.letter h1 {
+    font-size: 16px;
+    margin: 0 0 5px 0;
+    border-bottom: 1px dashed var(--heart-color);
+    padding-bottom: 5px;
+    color: #c9184a;
+}
+
+/* --- SISTEMA DE PÁGINAS --- */
+.pages-container {
+    flex-grow: 1;
+    position: relative;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+.page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    font-size: 13px;
+    line-height: 1.4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+}
+
+.page.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 6;
+    pointer-events: auto;
+    gap: 10px;
+    width: 100%;
+}
+
+.nav-buttons button {
+    background-color: var(--heart-color);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: sans-serif;
+    font-size: 11px;
+    transition: background 0.2s;
+    flex: 1;
+    pointer-events: auto;
+}
+
+.nav-buttons button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.nav-buttons button:hover:not(:disabled) {
+    background-color: #ff1744;
+}
+
+/* focus visible */
+.envelope-wrapper:focus {
+    outline: 3px solid rgba(255,77,109,0.6);
+    outline-offset: 4px;
+}
+
+button:focus {
+    outline: 2px solid rgba(255,77,109,0.8);
+    outline-offset: 2px;
+}
+
+/* --- SELLO DE CORAZÓN --- */
+.heart-seal {
+    position: absolute;
+    top: 85px;
+    left: 137px;
+    width: 25px;
+    height: 25px;
+    background-color: var(--heart-color);
+    transform: rotate(-45deg);
+    z-index: 5;
+    transition: transform 0.4s, opacity 0.4s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.heart-seal::before, .heart-seal::after {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background-color: var(--heart-color);
+    border-radius: 50%;
+}
+
+.heart-seal::before { top: -12.5px; left: 0; }
+.heart-seal::after { left: 12.5px; top: 0; }
+
+/* --- ESTADOS ACTIVOS --- */
+.envelope-wrapper.open .flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+}
+
+.envelope-wrapper.open .heart-seal {
+    transform: translateY(-50px) rotate(-45deg) scale(0);
+    opacity: 0;
+}
+
+.envelope-wrapper.open .letter {
+    transform: translateY(-140px) scale(1.05);
+    z-index: 5;
+    height: 290px; 
+}
+
+.envelope-wrapper.open .letter-content {
+    opacity: 1;
+    transform: scale(1);
+    transition-delay: 0.4s;
+    pointer-events: auto;
+}
+
+.envelope-wrapper.open .envelope {
+    transform: translateY(70px);
+}
+
+.firma-pollo {
+    font-size: 12px;
+    font-weight: bold;
+    color: #ff4d6d;
+    margin-top: 5px;
+}
+
+/* --- CONTROLES DE MÚSICA --- */
+.music-control {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    background-color: rgba(255, 77, 109, 0.8);
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.music-control:hover {
+    background-color: rgba(255, 77, 109, 1);
+}
+
+/* --- OVERLAY INICIAL --- */
+.music-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.overlay-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.overlay-content h2 {
+    color: #590d22;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.overlay-content button {
+    background-color: #ff4d6d;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.overlay-content button:hover {
+    background-color: #ff1744;
+}
+
+.music-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
