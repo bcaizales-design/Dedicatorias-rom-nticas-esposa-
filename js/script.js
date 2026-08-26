@@ -228,7 +228,7 @@ if (sobre) {
 
 // --- SISTEMA DE PÁGINAS DE LA CARTA ---
 let paginaActual = 1;
-const totalPaginas = 4;
+const totalPaginas = 5;
 const btnPrev = document.getElementById('btnPrev');
 const btnNext = document.getElementById('btnNext');
 
