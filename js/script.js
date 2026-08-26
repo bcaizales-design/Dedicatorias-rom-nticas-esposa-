@@ -360,3 +360,4 @@ imageViewer.addEventListener("click", (e) => {
         imageViewer.classList.remove("active");
     }
 });
+console.log("SCRIPT CARGADO CORRECTAMENTE");
