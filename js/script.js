@@ -34,6 +34,15 @@ const startButton = document.getElementById('startButton');
 let musicaActiva = false;
 let musicStartedByUserGesture = false;
 
+// Diagnostics: log audio events and errors to console to help debugging
+if (audio) {
+    audio.addEventListener('error', () => console.error('Audio error:', audio.error));
+    audio.addEventListener('play', () => console.log('Audio event: play'));
+    audio.addEventListener('playing', () => console.log('Audio event: playing'));
+    audio.addEventListener('pause', () => console.log('Audio event: pause'));
+    audio.addEventListener('volumechange', () => console.log('Audio volume/muted change:', {muted: audio.muted, volume: audio.volume}));
+}
+
 function setMusicState(on) {
     musicaActiva = !!on;
     if (musicToggle) {
@@ -51,14 +60,18 @@ async function iniciarMusica() {
     }
 
     // guard: only attempt once per user gesture to avoid repeated rejections
-    if (musicStartedByUserGesture) {
-        // if already tried to start, just toggle UI
-        if (musicaActiva && !audio.paused) return;
-    }
+    if (musicStartedByUserGesture && musicaActiva && !audio.paused) return;
 
-    audio.volume = 0.5;
     try {
+        // If audio was autoplayed muted, unmute now on user gesture so sound plays
+        if (audio.muted) {
+            audio.muted = false;
+        }
+        audio.volume = 0.5;
+
+        // Some browsers require a user gesture to resume an existing autoplayed audio
         await audio.play();
+
         musicStartedByUserGesture = true;
         setMusicState(true);
         if (musicOverlay) musicOverlay.classList.add('hidden');
@@ -91,6 +104,8 @@ if (musicToggle) {
             setMusicState(false);
         } else {
             try {
+                // ensure audio is unmuted before playing
+                if (audio.muted) audio.muted = false;
                 await audio.play();
                 setMusicState(true);
             } catch (e) {
