@@ -251,6 +251,19 @@ document.addEventListener('keydown', (e) => {
 // initial button state
 actualizarBotones();
 
+// botón para continuar sin música (cierra la overlay sin intentar reproducir)
+const continueNoMusic = document.getElementById('continueNoMusic');
+if (continueNoMusic) {
+  continueNoMusic.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (musicOverlay) musicOverlay.classList.add('hidden');
+    setMusicState(false);
+    // mover foco al sobre para accesibilidad
+    const sobreEl = document.getElementById('sobre');
+    if (sobreEl) sobreEl.focus();
+  });
+}
+
 // cleanup on unload
 window.addEventListener('beforeunload', () => {
     clearInterval(emojiInterval);
