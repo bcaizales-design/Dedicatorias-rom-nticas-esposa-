@@ -32,24 +32,42 @@ const musicToggle = document.getElementById('musicToggle');
 const musicOverlay = document.getElementById('musicOverlay');
 const startButton = document.getElementById('startButton');
 let musicaActiva = false;
+let musicStartedByUserGesture = false;
 
 function setMusicState(on) {
     musicaActiva = !!on;
-    musicToggle.textContent = musicaActiva ? '🎵 Música: ON' : '🎵 Música: OFF';
-    musicToggle.setAttribute('aria-pressed', String(!!musicaActiva));
+    if (musicToggle) {
+        musicToggle.textContent = musicaActiva ? '🎵 Música: ON' : '🎵 Música: OFF';
+        musicToggle.setAttribute('aria-pressed', String(!!musicaActiva));
+    }
 }
 
 async function iniciarMusica() {
-    if (!audio) return;
+    if (!audio) {
+        // If there's no audio element, just hide overlay so user can interact
+        if (musicOverlay) musicOverlay.classList.add('hidden');
+        setMusicState(false);
+        return;
+    }
+
+    // guard: only attempt once per user gesture to avoid repeated rejections
+    if (musicStartedByUserGesture) {
+        // if already tried to start, just toggle UI
+        if (musicaActiva && !audio.paused) return;
+    }
+
     audio.volume = 0.5;
     try {
         await audio.play();
+        musicStartedByUserGesture = true;
         setMusicState(true);
-        musicOverlay.classList.add('hidden');
+        if (musicOverlay) musicOverlay.classList.add('hidden');
     } catch (error) {
+        // playback blocked or failed (common with cross-origin or unsupported sources)
         console.warn('Error al reproducir música:', error);
         setMusicState(false);
-        setTimeout(() => musicOverlay.classList.add('hidden'), 500);
+        // allow interaction even if audio can't play: hide overlay after a short delay
+        if (musicOverlay) setTimeout(() => musicOverlay.classList.add('hidden'), 300);
     }
 }
 
@@ -67,6 +85,7 @@ if (startButton) {
 
 if (musicToggle) {
     musicToggle.addEventListener('click', async () => {
+        if (!audio) return;
         if (musicaActiva) {
             audio.pause();
             setMusicState(false);
@@ -80,6 +99,48 @@ if (musicToggle) {
         }
     });
 }
+
+// Fallback: algunos navegadores sólo permiten reproducir audio tras un gesto del usuario.
+// Añadimos escuchas globales que, si la overlay todavía está visible, inicien la música
+// con el primer gesto (click/touch/tecla). También permitimos cerrar la overlay con Escape.
+(function addUserGestureFallback() {
+    if (!musicOverlay) return;
+
+    function onUserGesture(e) {
+        // Si la overlay ya está oculta, no hacemos nada
+        if (musicOverlay.classList.contains('hidden')) {
+            removeListeners();
+            return;
+        }
+
+        // Si el usuario pulsa Escape, cerramos la overlay sin intentar reproducir audio
+        if (e.type === 'keydown' && e.key === 'Escape') {
+            musicOverlay.classList.add('hidden');
+            setMusicState(false);
+            removeListeners();
+            return;
+        }
+
+        // Aceptamos varios tipos de interacciones como gesto válido
+        const valid = e.type === 'pointerdown' || e.type === 'touchstart' || (e.type === 'keydown' && e.key && e.key.length === 1) || e.type === 'click';
+        if (valid) {
+            iniciarMusica();
+            removeListeners();
+        }
+    }
+
+    function removeListeners() {
+        window.removeEventListener('pointerdown', onUserGesture);
+        window.removeEventListener('touchstart', onUserGesture);
+        window.removeEventListener('keydown', onUserGesture);
+        window.removeEventListener('click', onUserGesture);
+    }
+
+    window.addEventListener('pointerdown', onUserGesture, {passive: true});
+    window.addEventListener('touchstart', onUserGesture, {passive: true});
+    window.addEventListener('keydown', onUserGesture);
+    window.addEventListener('click', onUserGesture, {passive: true});
+})();
 
 // --- EFECTO DE EMOJIS FLOTANTES ---
 const emojis = ["❤️","💖","💕","💗","💞","👶","🍼","🧸","👣","🌸","✨","🐥"];
@@ -144,8 +205,8 @@ if (sobre) {
             cambiarPagina(-1);
         } else if (e.key === 'ArrowRight') {
             cambiarPagina(1);
-        } else if (e.key.toLowerCase() === 'm') {
-            musicToggle.click();
+        } else if (e.key.toLowerCase && e.key.toLowerCase() === 'm') {
+            if (musicToggle) musicToggle.click();
         }
     });
 }
