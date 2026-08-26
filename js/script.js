@@ -224,6 +224,7 @@ if (sobre) {
             if (musicToggle) musicToggle.click();
         }
     });
+ }
 // --- SISTEMA DE PÁGINAS DE LA CARTA ---
 let paginaActual = 1;
 
@@ -268,29 +269,7 @@ function cambiarPagina(direccion) {
     }
 
     actualizarBotones();
-}
 
-
-window.cambiarPagina = cambiarPagina;
-
-
-if (btnPrev) {
-    btnPrev.addEventListener('click', (e)=>{
-        e.stopPropagation();
-        cambiarPagina(-1);
-    });
-}
-
-
-if (btnNext) {
-    btnNext.addEventListener('click', (e)=>{
-        e.stopPropagation();
-        cambiarPagina(1);
-    });
-}
-
-
-actualizarBotones();
 
 // expose cambiarPagina globally for inline handlers compatibility
 window.cambiarPagina = cambiarPagina;
@@ -334,11 +313,12 @@ const closeViewer = document.querySelector(".close-viewer");
 
 galleryImages.forEach(img => {
     img.addEventListener("click", () => {
-        zoomImage.src = img.src;
-        imageViewer.classList.add("active");
+        if(zoomImage && imageViewer){
+            zoomImage.src = img.src;
+            imageViewer.classList.add("active");
+        }
     });
 });
-
 
 if(closeViewer && imageViewer){
     closeViewer.addEventListener("click", () => {
