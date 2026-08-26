@@ -415,19 +415,31 @@ button:focus {
     font-size: 20px;
 }
 
+.overlay-content .buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
 .overlay-content button {
     background-color: #ff4d6d;
     color: white;
     border: none;
-    padding: 12px 30px;
-    border-radius: 5px;
+    padding: 12px 18px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
+    font-size: 15px;
+}
+
+.overlay-content button.secondary {
+    background-color: #cccccc;
+    color: #333333;
 }
 
 .overlay-content button:hover {
-    background-color: #ff1744;
+    opacity: 0.95;
 }
 
 .music-overlay.hidden {
