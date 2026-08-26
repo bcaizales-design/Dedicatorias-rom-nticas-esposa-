@@ -305,3 +305,28 @@ if (continueNoMusic) {
 window.addEventListener('beforeunload', () => {
     clearInterval(emojiInterval);
 });
+// --- ZOOM DE IMÁGENES ---
+const galleryImages = document.querySelectorAll(".gallery-img");
+const imageViewer = document.getElementById("imageViewer");
+const zoomImage = document.getElementById("zoomImage");
+const closeViewer = document.querySelector(".close-viewer");
+
+
+galleryImages.forEach(img => {
+    img.addEventListener("click", () => {
+        zoomImage.src = img.src;
+        imageViewer.classList.add("active");
+    });
+});
+
+
+closeViewer.addEventListener("click", () => {
+    imageViewer.classList.remove("active");
+});
+
+
+imageViewer.addEventListener("click", (e) => {
+    if(e.target === imageViewer){
+        imageViewer.classList.remove("active");
+    }
+});
