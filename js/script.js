@@ -269,7 +269,7 @@ function cambiarPagina(direccion) {
     }
 
     actualizarBotones();
-
+}
 
 // expose cambiarPagina globally for inline handlers compatibility
 window.cambiarPagina = cambiarPagina;
