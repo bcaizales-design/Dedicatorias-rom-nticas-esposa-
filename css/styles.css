@@ -8,44 +8,69 @@
     --text-color: #590d22;
     --heart-color: #ff4d6d;
 }
-/* --- GALERÍA DE IMÁGENES --- */
+/* GALERÍA */
 .gallery {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    height: 100%;
     justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
 .gallery-img {
-    max-width: 100%;
-    max-height: 100px;
-    border-radius: 5px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    width: 150px;
+    height: 150px;
     object-fit: cover;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-.gallery-caption {
-    font-size: 12px;
-    color: #ff4d6d;
-    margin-top: 5px;
-}
-html, body {
-    height: 100%;
+.gallery-img:hover {
+    transform: scale(1.1);
 }
 
-body {
-    background: linear-gradient(135deg, #0a0e27 0%, #16213e 25%, #0f3460 50%, #16213e 75%, #0a0e27 100%);
-    display: flex;
+
+/* VENTANA ZOOM */
+.image-viewer {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-    font-family: 'Georgia', serif;
-    overflow: hidden;
-    position: relative;
-    color: var(--text-color);
+    z-index: 9999;
+}
+
+.image-viewer.active {
+    display: flex;
+}
+
+.image-viewer img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 20px;
+    animation: zoomIn 0.4s ease;
+}
+
+.close-viewer {
+    position: absolute;
+    top: 25px;
+    right: 35px;
+    font-size: 35px;
+    color: white;
+    cursor: pointer;
+}
+
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 /* --- FONDO DE GALAXIA CON ESTRELLAS --- */
