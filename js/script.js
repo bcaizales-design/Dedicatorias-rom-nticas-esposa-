@@ -242,7 +242,28 @@ function cambiarPagina(direccion) {
     const prev = document.getElementById(`p${paginaActual}`);
     if (prev) prev.classList.remove('active');
 
-    paginaActual += direccion;
+    function cambiarPagina(direccion) {
+
+    const nuevaPagina = paginaActual + direccion;
+
+    if (nuevaPagina < 1 || nuevaPagina > totalPaginas) {
+        return;
+    }
+
+    const actual = document.getElementById(`p${paginaActual}`);
+    if (actual) {
+        actual.classList.remove('active');
+    }
+
+    paginaActual = nuevaPagina;
+
+    const siguiente = document.getElementById(`p${paginaActual}`);
+    if (siguiente) {
+        siguiente.classList.add('active');
+    }
+
+    actualizarBotones();
+}
     if (paginaActual < 1) paginaActual = 1;
     if (paginaActual > totalPaginas) paginaActual = totalPaginas;
 
