@@ -238,11 +238,28 @@ function actualizarBotones() {
     if (btnNext) btnNext.disabled = (paginaActual === totalPaginas);
 }
 
-function cambiarPagina(direccion) {
-    const prev = document.getElementById(`p${paginaActual}`);
-    if (prev) prev.classList.remove('active');
+// --- SISTEMA DE PÁGINAS DE LA CARTA ---
+let paginaActual = 1;
 
-    function cambiarPagina(direccion) {
+const paginas = document.querySelectorAll(".page");
+const totalPaginas = paginas.length;
+
+const btnPrev = document.getElementById('btnPrev');
+const btnNext = document.getElementById('btnNext');
+
+
+function actualizarBotones() {
+    if (btnPrev) {
+        btnPrev.disabled = paginaActual === 1;
+    }
+
+    if (btnNext) {
+        btnNext.disabled = paginaActual === totalPaginas;
+    }
+}
+
+
+function cambiarPagina(direccion) {
 
     const nuevaPagina = paginaActual + direccion;
 
@@ -250,19 +267,49 @@ function cambiarPagina(direccion) {
         return;
     }
 
-    const actual = document.getElementById(`p${paginaActual}`);
-    if (actual) {
-        actual.classList.remove('active');
+
+    const paginaAnterior = document.getElementById(`p${paginaActual}`);
+
+    if (paginaAnterior) {
+        paginaAnterior.classList.remove("active");
     }
+
 
     paginaActual = nuevaPagina;
 
-    const siguiente = document.getElementById(`p${paginaActual}`);
-    if (siguiente) {
-        siguiente.classList.add('active');
+
+    const paginaNueva = document.getElementById(`p${paginaActual}`);
+
+    if (paginaNueva) {
+        paginaNueva.classList.add("active");
     }
 
+
     actualizarBotones();
+}
+
+
+// Hacer disponible para otros eventos
+window.cambiarPagina = cambiarPagina;
+
+
+if (btnPrev) {
+    btnPrev.addEventListener("click", (e) => {
+        e.stopPropagation();
+        cambiarPagina(-1);
+    });
+}
+
+
+if (btnNext) {
+    btnNext.addEventListener("click", (e) => {
+        e.stopPropagation();
+        cambiarPagina(1);
+    });
+}
+
+
+actualizarBotones();
 }
     if (paginaActual < 1) paginaActual = 1;
     if (paginaActual > totalPaginas) paginaActual = totalPaginas;
@@ -320,9 +367,20 @@ galleryImages.forEach(img => {
 });
 
 
-closeViewer.addEventListener("click", () => {
-    imageViewer.classList.remove("active");
-});
+if(closeViewer && imageViewer){
+    closeViewer.addEventListener("click", () => {
+        imageViewer.classList.remove("active");
+    });
+}
+
+
+if(imageViewer){
+    imageViewer.addEventListener("click", (e) => {
+        if(e.target === imageViewer){
+            imageViewer.classList.remove("active");
+        }
+    });
+}
 
 
 imageViewer.addEventListener("click", (e) => {
