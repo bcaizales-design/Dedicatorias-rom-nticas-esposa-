@@ -36,8 +36,15 @@
     <button class="music-control" id="musicToggle" aria-pressed="false" aria-label="Alternar música">🎵 Música: OFF</button>
 
     <!-- AUDIO -->
-    <audio id="backgroundMusic" loop>
+    <!--
+      - playsinline + autoplay muted permite un autoplay silenciado en muchos navegadores.
+      - preload="auto" ayuda a que el navegador descargue el audio con antelación.
+      - añadimos una fuente de respaldo pública para pruebas si el archivo local no existe.
+    -->
+    <audio id="backgroundMusic" loop playsinline autoplay muted preload="auto">
         <source src="assets/audio/diego-luna-te-amo.mp3" type="audio/mpeg">
+        <!-- Fuente de respaldo pública: cámbiala por tu MP3 si prefieres -->
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
         Tu navegador no soporta audio HTML5.
     </audio>
 
