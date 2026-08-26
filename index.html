@@ -434,7 +434,7 @@
     <div class="music-overlay" id="musicOverlay">
         <div class="overlay-content">
             <h2>🎵 ¡Abre el sobre con música! 🎵</h2>
-            <button onclick="iniciarMusica()">Presiona para empezar</button>
+            <button id="startButton">Presiona para empezar</button>
         </div>
     </div>
 
@@ -521,21 +521,42 @@
         const audio = document.getElementById('backgroundMusic');
         const musicToggle = document.getElementById('musicToggle');
         const musicOverlay = document.getElementById('musicOverlay');
+        const startButton = document.getElementById('startButton');
         let musicaActiva = false;
 
         function iniciarMusica() {
-            musicaActiva = true;
-            audio.play().then(() => {
+            // Permitir que el navegador reproduzca el audio
+            audio.volume = 0.5;
+            const playPromise = audio.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    musicaActiva = true;
+                    musicToggle.textContent = '🎵 Música: ON';
+                    musicOverlay.classList.add('hidden');
+                }).catch((error) => {
+                    console.log('Error al reproducir música:', error);
+                    musicaActiva = false;
+                    musicToggle.textContent = '🎵 Música: OFF';
+                    // Ocultar overlay incluso si falla
+                    setTimeout(() => {
+                        musicOverlay.classList.add('hidden');
+                    }, 500);
+                });
+            } else {
+                // Navegadores antiguos
+                musicaActiva = true;
                 musicToggle.textContent = '🎵 Música: ON';
                 musicOverlay.classList.add('hidden');
-            }).catch(function(error) {
-                console.log('Error reproduciendo música:', error);
-                musicaActiva = false;
-                musicToggle.textContent = '🎵 Música: OFF';
-                // Ocultar overlay aunque falle la música
-                musicOverlay.classList.add('hidden');
-            });
+            }
         }
+
+        // Event listener para el botón de inicio
+        startButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            iniciarMusica();
+        });
 
         musicToggle.addEventListener('click', () => {
             if (musicaActiva) {
