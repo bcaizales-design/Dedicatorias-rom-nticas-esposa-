@@ -190,6 +190,7 @@
             transform-origin: top;
             transition: transform 0.4s ease-in-out, z-index 0.2s ease-in-out;
             z-index: 4;
+            cursor: pointer;
         }
 
         /* --- LA CARTA SECRETA --- */
@@ -380,7 +381,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 999;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
         .overlay-content {
@@ -412,8 +414,10 @@
             background-color: #ff1744;
         }
 
-        .overlay-content.hidden {
-            display: none;
+        .music-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -521,6 +525,8 @@
                 console.log('Error reproduciendo música:', error);
                 musicaActiva = false;
                 musicToggle.textContent = '🎵 Música: OFF';
+                // Ocultar overlay aunque falle la música
+                musicOverlay.classList.add('hidden');
             });
         }
 
@@ -565,9 +571,24 @@
 
         // --- INTERACCIÓN DEL SOBRE ---
         const sobre = document.getElementById('sobre');
-        sobre.addEventListener('click', () => {
-            sobre.classList.add('open');
+        
+        // Usar click para detectar la interacción en el contenedor
+        sobre.addEventListener('click', function(e) {
+            e.stopPropagation();
+            abrirSobre();
         });
+
+        // Agregar touchstart para móviles
+        sobre.addEventListener('touchstart', function(e) {
+            e.stopPropagation();
+            abrirSobre();
+        }, false);
+
+        function abrirSobre() {
+            if (!sobre.classList.contains('open')) {
+                sobre.classList.add('open');
+            }
+        }
 
         // --- SISTEMA DE PÁGINAS DE LA CARTA ---
         let paginaActual = 1;
