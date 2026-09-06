@@ -1,186 +1,138 @@
-// carousel.js - Funcionalidad del carrusel de diapositivas
+// carousel.js - Funcionalidad del Lightbox automático
 
-class Carousel {
-    constructor() {
-        this.currentSlide = 0;
-        this.slides = document.querySelectorAll('.carousel-slide');
-        this.totalSlides = this.slides.length;
-        this.wrapper = document.querySelector('.carousel-wrapper');
-        this.indicatorsContainer = document.getElementById('carouselIndicators');
-        this.prevBtn = document.getElementById('carouselPrev');
-        this.nextBtn = document.getElementById('carouselNext');
-        
-        if (this.slides.length === 0) return;
-        
-        this.init();
-    }
-
-    init() {
-        // Crear indicadores
-        this.createIndicators();
-        
-        // Mostrar primera diapositiva
-        this.showSlide(0);
-        
-        // Event listeners para botones
-        if (this.prevBtn) {
-            this.prevBtn.addEventListener('click', () => this.prevSlide());
-        }
-        if (this.nextBtn) {
-            this.nextBtn.addEventListener('click', () => this.nextSlide());
-        }
-        
-        // Soporte para teclado
-        document.addEventListener('keydown', (e) => {
-            if (this.isCarouselActive()) {
-                if (e.key === 'ArrowLeft') this.prevSlide();
-                if (e.key === 'ArrowRight') this.nextSlide();
-            }
-        });
-        
-        // Soporte para deslizar (swipe)
-        this.initSwipe();
-        
-        // Iniciar indicadores clickeables
-        this.initIndicators();
-    }
-
-    createIndicators() {
-        if (!this.indicatorsContainer) return;
-        
-        for (let i = 0; i < this.totalSlides; i++) {
-            const indicator = document.createElement('div');
-            indicator.className = 'carousel-indicator';
-            indicator.setAttribute('data-index', i);
-            indicator.setAttribute('role', 'button');
-            indicator.setAttribute('aria-label', `Ir a diapositiva ${i + 1}`);
-            indicator.addEventListener('click', () => this.showSlide(i));
-            this.indicatorsContainer.appendChild(indicator);
-        }
-    }
-
-    initIndicators() {
-        const indicators = document.querySelectorAll('.carousel-indicator');
-        indicators.forEach((indicator, index) => {
-            indicator.addEventListener('click', () => {
-                this.showSlide(index);
-            });
-        });
-    }
-
-    updateIndicators() {
-        const indicators = document.querySelectorAll('.carousel-indicator');
-        indicators.forEach((indicator, index) => {
-            if (index === this.currentSlide) {
-                indicator.classList.add('active');
-            } else {
-                indicator.classList.remove('active');
-            }
-        });
-    }
-
-    showSlide(n) {
-        if (n >= this.totalSlides) {
-            this.currentSlide = this.totalSlides - 1;
-        } else if (n < 0) {
-            this.currentSlide = 0;
-        } else {
-            this.currentSlide = n;
-        }
-
-        // Ocultar todas las diapositivas
-        this.slides.forEach(slide => {
-            slide.classList.remove('active');
-        });
-
-        // Mostrar la diapositiva actual
-        if (this.slides[this.currentSlide]) {
-            this.slides[this.currentSlide].classList.add('active');
-        }
-
-        // Actualizar indicadores
-        this.updateIndicators();
-
-        // Actualizar estado de botones
-        this.updateButtonStates();
-    }
-
-    nextSlide() {
-        this.showSlide(this.currentSlide + 1);
-    }
-
-    prevSlide() {
-        this.showSlide(this.currentSlide - 1);
-    }
-
-    updateButtonStates() {
-        if (this.prevBtn) {
-            this.prevBtn.disabled = this.currentSlide === 0;
-        }
-        if (this.nextBtn) {
-            this.nextBtn.disabled = this.currentSlide === this.totalSlides - 1;
-        }
-    }
-
-    isCarouselActive() {
-        // Verificar si la página del carrusel está activa
-        const carouselPage = document.getElementById('p5');
-        return carouselPage && carouselPage.classList.contains('active');
-    }
-
-    // Soporte para deslizar (swipe) en dispositivos móviles
-    initSwipe() {
-        if (!this.wrapper) return;
-
-        let startX = 0;
-        let endX = 0;
-
-        this.wrapper.addEventListener('touchstart', (e) => {
-            startX = e.changedTouches[0].screenX;
-        }, false);
-
-        this.wrapper.addEventListener('touchend', (e) => {
-            endX = e.changedTouches[0].screenX;
-            this.handleSwipe();
-        }, false);
-
-        const handleSwipe = () => {
-            const diff = startX - endX;
-            const threshold = 50; // Distancia mínima para considerar un deslizamiento
-
-            if (Math.abs(diff) > threshold) {
-                if (diff > 0) {
-                    // Deslizar hacia la izquierda = siguiente
-                    this.nextSlide();
-                } else {
-                    // Deslizar hacia la derecha = anterior
-                    this.prevSlide();
-                }
-            }
-        };
-
-        this.handleSwipe = handleSwipe;
-    }
-}
-
-// Inicializar carrusel cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
-    const carousel = new Carousel();
-    window.carousel = carousel; // Hacer disponible globalmente si es necesario
-    console.log('Carrusel inicializado');
+    const gallerySection = document.getElementById('auto-gallery-section');
+    if (!gallerySection) return;
+
+    // Extraer rutas de imágenes y descripciones desde el HTML
+    const imagesData = Array.from(gallerySection.querySelectorAll('img')).map(img => ({
+        src: img.getAttribute('data-full') || img.src,
+        alt: img.getAttribute('alt') || ''
+    }));
+
+    if (imagesData.length === 0) return;
+
+    // Configuración del intervalo automático (4 segundos por defecto)
+    const intervalTime = parseInt(gallerySection.getAttribute('data-autoplay-interval')) || 4000;
+    
+    let currentIndex = 0;
+    let autoPlayTimer = null;
+    let overlay, imgElement, captionElement;
+
+    // Crear la estructura DOM del Lightbox dinámicamente
+    function createLightbox() {
+        if (document.querySelector('.auto-lightbox-overlay')) return;
+
+        overlay = document.createElement('div');
+        overlay.className = 'auto-lightbox-overlay auto-lightbox-fade-in';
+        overlay.style.display = 'none';
+
+        overlay.innerHTML = `
+            <button class="auto-close-btn" id="autoCloseBtn" aria-label="Cerrar visor">✖</button>
+            <button class="auto-nav-btn left" id="autoPrevBtn" aria-label="Imagen anterior">❮</button>
+            
+            <div class="auto-lightbox-content">
+                <img id="autoLightboxImg" src="" alt="">
+            </div>
+            
+            <button class="auto-nav-btn right" id="autoNextBtn" aria-label="Imagen siguiente">❯</button>
+            <div class="auto-caption" id="autoCaption"></div>
+        `;
+
+        document.body.appendChild(overlay);
+
+        imgElement = document.getElementById('autoLightboxImg');
+        captionElement = document.getElementById('autoCaption');
+
+        // Eventos de botones
+        document.getElementById('autoCloseBtn').addEventListener('click', closeLightbox);
+        document.getElementById('autoPrevBtn').addEventListener('click', () => {
+            resetTimer();
+            prevImage();
+        });
+        document.getElementById('autoNextBtn').addEventListener('click', () => {
+            resetTimer();
+            nextImage();
+        });
+
+        // Soporte para gestos táctiles (Swipe en móviles)
+        let touchStartX = 0;
+        overlay.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        overlay.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].screenX;
+            if (touchStartX - touchEndX > 50) {
+                resetTimer();
+                nextImage(); // Swipe izquierda -> Siguiente
+            } else if (touchEndX - touchStartX > 50) {
+                resetTimer();
+                prevImage(); // Swipe derecha -> Anterior
+            }
+        }, { passive: true });
+    }
+
+    // Mostrar imagen según el índice
+    function updateImage() {
+        if (!imgElement) return;
+        const currentData = imagesData[currentIndex];
+        
+        // Transición suave
+        imgElement.style.opacity = '0.3';
+        setTimeout(() => {
+            imgElement.src = currentData.src;
+            imgElement.alt = currentData.alt;
+            captionElement.textContent = currentData.alt;
+            imgElement.style.opacity = '1';
+        }, 150);
+    }
+
+    function nextImage() {
+        currentIndex = (currentIndex + 1) % imagesData.length;
+        updateImage();
+    }
+
+    function prevImage() {
+        currentIndex = (currentIndex - 1 + imagesData.length) % imagesData.length;
+        updateImage();
+    }
+
+    function startAutoPlay() {
+        stopAutoPlay();
+        autoPlayTimer = setInterval(nextImage, intervalTime);
+    }
+
+    function stopAutoPlay() {
+        if (autoPlayTimer) clearInterval(autoPlayTimer);
+    }
+
+    function resetTimer() {
+        stopAutoPlay();
+        startAutoPlay();
+    }
+
+    function openLightbox(index = 0) {
+        createLightbox();
+        currentIndex = index;
+        updateImage();
+        overlay.style.display = 'flex';
+        document.body.classList.add('auto-lightbox-open');
+        startAutoPlay();
+    }
+
+    function closeLightbox() {
+        if (!overlay) return;
+        stopAutoPlay();
+        overlay.style.display = 'none';
+        document.body.classList.remove('auto-lightbox-open');
+    }
+
+    // Vincular al botón "Ver Fotos en Grande 💖" de la página 5
+    const openBtn = document.getElementById('openGalleryBtn');
+    if (openBtn) {
+        openBtn.addEventListener('click', () => openLightbox(0));
+    }
 });
 
-// Fallback si el DOM ya está listo antes de cargar este script
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        if (!window.carousel) {
-            const carousel = new Carousel();
-            window.carousel = carousel;
-        }
-    });
-} else {
-    if (!window.carousel) {
-        const carousel = new Carousel();
-        window.carousel = carousel;
-    }
-}
+console.log("Carousel (Lightbox automático) cargado correctamente");
