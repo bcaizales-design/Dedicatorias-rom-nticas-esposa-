@@ -1,5 +1,5 @@
 /* =========================================================
-   ESTILOS GENERALES
+   RESET GENERAL
    ========================================================= */
 
 * {
@@ -8,586 +8,1668 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+    background:
+        linear-gradient(135deg, #080b22, #1b1f45);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow-x: hidden;
-    color: #ffffff;
+    color: white;
 }
 
+
 /* =========================================================
-   FONDO DE ESTRELLAS Y EFECTOS
+   FONDO GALAXIA
    ========================================================= */
 
 .starfield {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     z-index: 0;
     pointer-events: none;
 }
 
+
 .star {
     position: absolute;
-    background: #ffffff;
+    background: white;
     border-radius: 50%;
-    animation: twinkle 3s infinite;
+    animation: twinkle 3s infinite ease-in-out;
 }
+
 
 @keyframes twinkle {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 1; }
+
+    0%,100% {
+        opacity: .3;
+    }
+
+    50% {
+        opacity: 1;
+    }
 }
+
+
 
 .nebula {
+
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(ellipse at 50% 50%, rgba(138, 43, 226, 0.1) 0%, transparent 70%);
-    z-index: 1;
-    pointer-events: none;
+    inset:0;
+
+    background:
+    radial-gradient(
+        ellipse at center,
+        rgba(255,105,180,.15),
+        transparent 70%
+    );
+
+    z-index:1;
+    pointer-events:none;
+
 }
+
+
+
+/* =========================================================
+   PLANETAS
+   ========================================================= */
+
 
 .planet {
+
     position: fixed;
-    border-radius: 50%;
-    z-index: 2;
-    pointer-events: none;
+    border-radius:50%;
+    z-index:2;
+    pointer-events:none;
+
 }
+
 
 .planet1 {
-    width: 150px;
-    height: 150px;
-    background: radial-gradient(circle at 30% 30%, #ff69b4, #ff1493);
-    top: 10%;
-    right: 5%;
-    opacity: 0.6;
-    box-shadow: 0 0 60px rgba(255, 20, 147, 0.4);
+
+    width:160px;
+    height:160px;
+
+    top:8%;
+    right:5%;
+
+    background:
+    radial-gradient(circle at 30% 30%,
+    #ff9ed2,
+    #ff1493);
+
+    opacity:.5;
+
+    box-shadow:
+    0 0 70px rgba(255,20,147,.5);
+
 }
+
+
 
 .planet2 {
-    width: 100px;
-    height: 100px;
-    background: radial-gradient(circle at 35% 35%, #87ceeb, #4169e1);
-    bottom: 15%;
-    left: 10%;
-    opacity: 0.5;
-    box-shadow: 0 0 40px rgba(65, 105, 225, 0.3);
+
+
+    width:110px;
+    height:110px;
+
+    bottom:15%;
+    left:8%;
+
+
+    background:
+    radial-gradient(circle,
+    #87cefa,
+    #4169e1);
+
+
+    opacity:.5;
+
+
+    box-shadow:
+    0 0 50px rgba(65,105,225,.5);
+
 }
+
+
 
 .planet3 {
-    width: 80px;
-    height: 80px;
-    background: radial-gradient(circle at 40% 40%, #ffd700, #ffa500);
-    top: 50%;
-    right: 2%;
-    opacity: 0.4;
-    box-shadow: 0 0 30px rgba(255, 165, 0, 0.2);
+
+
+    width:90px;
+    height:90px;
+
+
+    right:3%;
+    top:50%;
+
+
+    background:
+    radial-gradient(circle,
+    #ffe066,
+    #ff9900);
+
+
+    opacity:.4;
+
+
 }
 
+
+
 /* =========================================================
-   CONTENEDOR PRINCIPAL DEL SOBRE
+   SOBRE PRINCIPAL
    ========================================================= */
+
 
 .envelope-wrapper {
-    position: relative;
-    z-index: 10;
-    cursor: pointer;
-    outline: none;
+
+
+    position:relative;
+
+    z-index:10;
+
+    cursor:pointer;
+
+    outline:none;
+
 }
+
+
 
 .envelope {
-    position: relative;
-    width: 300px;
-    height: 200px;
-    background: #fff;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-    transform-style: preserve-3d;
-    transition: all 0.6s ease;
+
+
+    position:relative;
+
+
+    width:320px;
+
+    height:210px;
+
+
+    background:#fff;
+
+
+    border-radius:10px;
+
+
+    box-shadow:
+    0 20px 60px rgba(0,0,0,.6);
+
+
+    transform-style:preserve-3d;
+
+
+    transition:
+    transform .8s ease;
+
+
 }
+
+
+
+/* YA NO GIRA COMPLETO */
 
 .envelope-wrapper.open .envelope {
-    transform: rotateX(180deg);
+
+    transform:
+    translateY(30px);
+
 }
+
+
+
+
+/* =========================================================
+   SOLAPA DEL SOBRE
+   ========================================================= */
+
 
 .flap {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 50%;
-    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
-    clip-path: polygon(0 0, 100% 0, 50% 100%);
-    transform-origin: top center;
-    transition: transform 0.6s ease;
-    z-index: 11;
+
+
+    position:absolute;
+
+    top:0;
+
+    left:0;
+
+
+    width:100%;
+
+    height:55%;
+
+
+    background:
+    linear-gradient(
+    135deg,
+    #ff69b4,
+    #ff1493);
+
+
+    clip-path:
+    polygon(
+    0 0,
+    100% 0,
+    50% 100%
+    );
+
+
+    transform-origin:top;
+
+
+    transition:
+    transform .8s ease;
+
+
+    z-index:15;
+
 }
+
+
 
 .envelope-wrapper.open .flap {
-    transform: rotateX(180deg);
+
+    transform:
+    rotateX(180deg);
+
 }
+
+
+
+
+/* =========================================================
+   SELLO DEL CORAZÓN
+   ========================================================= */
+
 
 .heart-seal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 40px;
-    z-index: 12;
-    animation: heartBeat 1.5s infinite;
+
+
+    position:absolute;
+
+
+    top:50%;
+    left:50%;
+
+
+    transform:
+    translate(-50%,-50%);
+
+
+    font-size:45px;
+
+
+    z-index:20;
+
+
+    animation:
+    heartbeat 1.5s infinite;
+
+
 }
 
-@keyframes heartBeat {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); }
-    50% { transform: translate(-50%, -50%) scale(1.2); }
+
+.heart-seal::before {
+
+    content:"❤️";
+
 }
+
+
+
+@keyframes heartbeat {
+
+
+    0%,100%{
+
+        transform:
+        translate(-50%,-50%)
+        scale(1);
+
+    }
+
+
+    50%{
+
+        transform:
+        translate(-50%,-50%)
+        scale(1.25);
+
+    }
+
+}
+
+
+
 
 /* =========================================================
-   CARTA Y CONTENIDO
+   CARTA QUE SALE DEL SOBRE
    ========================================================= */
+
 
 .letter {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #fffaf0 0%, #fff5ee 100%);
-    border-radius: 3px;
-    overflow: hidden;
+
+
+    position:absolute;
+
+
+    width:290px;
+
+    height:280px;
+
+
+    left:15px;
+
+    bottom:0;
+
+
+    background:
+    linear-gradient(
+    135deg,
+    #fffaf0,
+    #fff5ee);
+
+
+    border-radius:10px;
+
+
+    overflow:hidden;
+
+
+    z-index:5;
+
+
+    transition:
+    transform .8s ease;
+
+
 }
+
+
+
+
+.envelope-wrapper.open .letter {
+
+
+    transform:
+    translateY(-160px);
+
+
+}
+
+
+
 
 .letter-content {
-    width: 95%;
-    height: 95%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow-y: auto;
-    color: #333;
+
+
+    width:95%;
+
+    height:95%;
+
+
+    margin:auto;
+
+
+    display:flex;
+
+
+    flex-direction:column;
+
+
+    justify-content:center;
+
+
+    align-items:center;
+
+
+    color:#333;
+
+
+    overflow:hidden;
+
+
 }
+/* =========================================================
+   TITULO Y CONTENIDO DE LA CARTA
+   ========================================================= */
+
 
 .letter-content h1 {
-    font-size: 20px;
-    margin-bottom: 20px;
-    text-align: center;
-    color: #ff1493;
+
+    font-size:22px;
+
+    margin-bottom:15px;
+
+    text-align:center;
+
+    color:#ff1493;
+
+    font-weight:bold;
+
 }
+
+
+
+
+/* =========================================================
+   SISTEMA DE PAGINAS
+   ========================================================= */
+
 
 .pages-container {
-    width: 100%;
-    height: 100%;
-    position: relative;
+
+    position:relative;
+
+    width:100%;
+
+    height:100%;
+
+    overflow:hidden;
+
 }
+
+
 
 .page {
-    display: none;
-    width: 100%;
-    padding: 20px;
-    text-align: center;
-    animation: fadeIn 0.5s ease;
+
+
+    display:none;
+
+
+    width:100%;
+
+
+    height:100%;
+
+
+    padding:20px;
+
+
+    text-align:center;
+
+
+    animation:
+    pageFade .5s ease;
+
+
 }
+
+
 
 .page.active {
-    display: block;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+
+
+@keyframes pageFade {
+
+
+    from {
+
+        opacity:0;
+
+        transform:
+        translateY(20px);
+
+    }
+
+
+    to {
+
+        opacity:1;
+
+        transform:
+        translateY(0);
+
+    }
+
 }
+
+
 
 .page p {
-    line-height: 1.6;
-    font-size: 14px;
-    color: #555;
+
+
+    font-size:15px;
+
+
+    line-height:1.7;
+
+
+    color:#555;
+
+
 }
+
+
+
 
 .firma-pollo {
-    display: block;
-    margin-top: 15px;
-    font-weight: bold;
-    color: #ff69b4;
+
+
+    display:block;
+
+
+    margin-top:20px;
+
+
+    color:#ff1493;
+
+
+    font-weight:bold;
+
+
+    font-size:18px;
+
+
 }
 
+
+
+
+
 /* =========================================================
-   BOTONES DE NAVEGACIÓN
+   BOTONES DE PAGINACION
    ========================================================= */
+
 
 .nav-buttons {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 10px;
-    z-index: 13;
+
+
+    position:absolute;
+
+
+    bottom:-55px;
+
+
+    left:50%;
+
+
+    transform:
+    translateX(-50%);
+
+
+    display:flex;
+
+
+    gap:15px;
+
+
+    z-index:50;
+
+
 }
+
+
 
 .nav-buttons button {
-    padding: 8px 15px;
-    background: #ff1493;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 12px;
-    transition: all 0.3s ease;
+
+
+    padding:10px 18px;
+
+
+    border:none;
+
+
+    border-radius:25px;
+
+
+    cursor:pointer;
+
+
+    font-weight:bold;
+
+
+    color:white;
+
+
+    background:
+    linear-gradient(
+    135deg,
+    #ff69b4,
+    #ff1493);
+
+
+    transition:.3s;
+
+
 }
 
-.nav-buttons button:hover:not(:disabled) {
-    background: #ff69b4;
-    transform: scale(1.05);
+
+
+.nav-buttons button:hover:not(:disabled){
+
+
+    transform:
+    scale(1.1);
+
+
 }
+
+
 
 .nav-buttons button:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-    opacity: 0.6;
+
+
+    background:#ccc;
+
+
+    cursor:not-allowed;
+
+
 }
 
+
+
+
 /* =========================================================
-   OVERLAY DE MÚSICA
+   OVERLAY DE MUSICA
    ========================================================= */
+
 
 .music-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
-    opacity: 1;
-    transition: opacity 0.3s ease;
+
+
+    position:fixed;
+
+
+    inset:0;
+
+
+    background:
+    rgba(0,0,0,.85);
+
+
+    display:flex;
+
+
+    justify-content:center;
+
+
+    align-items:center;
+
+
+    z-index:200;
+
+
+    transition:.5s;
+
+
 }
+
+
 
 .music-overlay.hidden {
-    opacity: 0;
-    pointer-events: none;
+
+
+    opacity:0;
+
+
+    pointer-events:none;
+
+
 }
+
+
 
 .overlay-content {
-    background: linear-gradient(135deg, #ff69b4, #ff1493);
-    padding: 40px;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+
+
+    width:90%;
+
+
+    max-width:400px;
+
+
+    padding:40px;
+
+
+    text-align:center;
+
+
+    border-radius:20px;
+
+
+    background:
+    linear-gradient(
+    135deg,
+    #ff69b4,
+    #ff1493);
+
+
+    box-shadow:
+    0 20px 60px rgba(0,0,0,.5);
+
+
 }
+
+
 
 .overlay-content h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: white;
+
+
+    color:white;
+
+
+    margin-bottom:25px;
+
+
+    font-size:25px;
+
+
 }
+
+
 
 .overlay-content button {
-    padding: 12px 30px;
-    margin: 10px;
-    background: white;
-    color: #ff1493;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s ease;
+
+
+    display:block;
+
+
+    width:100%;
+
+
+    margin:12px auto;
+
+
+    padding:14px;
+
+
+    border:none;
+
+
+    border-radius:30px;
+
+
+    cursor:pointer;
+
+
+    font-weight:bold;
+
+
+    color:#ff1493;
+
+
+    background:white;
+
+
+    transition:.3s;
+
+
 }
+
+
 
 .overlay-content button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
+
+    transform:
+    scale(1.05);
+
+
 }
 
+
+
+
 /* =========================================================
-   CONTROL DE MÚSICA
+   CONTROL MUSICA
    ========================================================= */
+
 
 .music-control {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 10px 15px;
-    background: #ff69b4;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    z-index: 99;
-    transition: all 0.3s ease;
-    font-weight: bold;
+
+
+    position:fixed;
+
+
+    top:20px;
+
+
+    right:20px;
+
+
+    z-index:150;
+
+
+    padding:12px 20px;
+
+
+    border:none;
+
+
+    border-radius:30px;
+
+
+    cursor:pointer;
+
+
+    color:white;
+
+
+    font-weight:bold;
+
+
+    background:
+    linear-gradient(
+    135deg,
+    #ff69b4,
+    #ff1493);
+
+
+    box-shadow:
+    0 5px 20px rgba(255,20,147,.4);
+
+
 }
+
+
 
 .music-control:hover {
-    background: #ff1493;
-    transform: scale(1.1);
+
+
+    transform:
+    scale(1.1);
+
+
 }
 
-/* =========================================================
-   AUDIO ELEMENT (OCULTO)
-   ========================================================= */
+
+
 
 audio {
-    display: none;
+
+
+    display:none;
+
+
 }
+
+
+
+
 
 /* =========================================================
    EMOJIS FLOTANTES
    ========================================================= */
 
+
 .flotante {
-    position: fixed;
-    pointer-events: none;
-    z-index: 5;
-    animation: float-up 8s linear forwards;
+
+
+    position:fixed;
+
+
+    bottom:-50px;
+
+
+    z-index:20;
+
+
+    pointer-events:none;
+
+
+    animation:
+    floatUp 8s linear forwards;
+
+
 }
 
-@keyframes float-up {
+
+
+@keyframes floatUp {
+
+
     0% {
-        bottom: -50px;
-        opacity: 1;
+
+
+        transform:
+        translateY(0)
+        rotate(0deg);
+
+
+        opacity:1;
+
+
     }
+
+
     100% {
-        bottom: 100vh;
-        opacity: 0;
-        transform: translateX(var(--tx, 0px));
+
+
+        transform:
+        translateY(-110vh)
+        rotate(360deg);
+
+
+        opacity:0;
+
+
     }
-}
 
+}
 /* =========================================================
-   LIGHTBOX AUTOMÁTICO
+   GALERIA AUTOMATICA
    ========================================================= */
 
-.auto-lightbox-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.95);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 200;
+
+.hidden-gallery {
+
+    display:none;
+
 }
 
-.auto-lightbox-overlay.auto-lightbox-fade-in {
-    animation: fadeInLightbox 0.3s ease;
-}
 
-@keyframes fadeInLightbox {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.auto-lightbox-content {
-    position: relative;
-    max-width: 80vw;
-    max-height: 80vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.auto-lightbox-content img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    border-radius: 10px;
-    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.7);
-}
-
-.auto-close-btn,
-.auto-nav-btn {
-    position: absolute;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 15px 20px;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    z-index: 201;
-}
-
-.auto-close-btn:hover,
-.auto-nav-btn:hover {
-    background: rgba(255, 255, 255, 0.4);
-    transform: scale(1.1);
-}
-
-.auto-close-btn {
-    top: 20px;
-    right: 20px;
-}
-
-.auto-nav-btn.left {
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.auto-nav-btn.right {
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.auto-caption {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-align: center;
-    max-width: 80%;
-}
-
-/* =========================================================
-   GALERÍA Y BOTONES DE ACCIÓN
-   ========================================================= */
 
 .gallery-trigger-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+
+
+    display:flex;
+
+
+    flex-direction:column;
+
+
+    justify-content:center;
+
+
+    align-items:center;
+
+
+    gap:20px;
+
+
 }
+
+
+
+.gallery-trigger-container p {
+
+
+    font-size:16px;
+
+
+    color:#555;
+
+
+    text-align:center;
+
+
+}
+
+
+
+
+/* BOTON ABRIR GALERIA */
+
 
 .action-btn {
-    padding: 12px 30px;
-    background: linear-gradient(135deg, #ff69b4, #ff1493);
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(255, 20, 147, 0.3);
+
+
+    padding:14px 35px;
+
+
+    border:none;
+
+
+    border-radius:30px;
+
+
+    cursor:pointer;
+
+
+    color:white;
+
+
+    font-size:15px;
+
+
+    font-weight:bold;
+
+
+    background:
+    linear-gradient(
+    135deg,
+    #ff69b4,
+    #ff1493);
+
+
+    box-shadow:
+    0 8px 20px rgba(255,20,147,.4);
+
+
+    transition:.3s;
+
+
 }
+
+
 
 .action-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(255, 20, 147, 0.5);
+
+
+    transform:
+    scale(1.08);
+
+
 }
 
-.action-btn:active {
-    transform: scale(0.95);
-}
+
+
 
 /* =========================================================
-   MENSAJE FINAL
+   LIGHTBOX AUTOMATICO
    ========================================================= */
 
-.final-message-container {
-    text-align: center;
+
+.auto-lightbox-overlay {
+
+
+    position:fixed;
+
+
+    inset:0;
+
+
+    background:
+    rgba(0,0,0,.95);
+
+
+    display:none;
+
+
+    justify-content:center;
+
+
+    align-items:center;
+
+
+    z-index:500;
+
+
 }
 
-.final-message-container h2 {
-    font-size: 24px;
-    margin-bottom: 15px;
-    color: #ff1493;
+
+
+.auto-lightbox-overlay.auto-lightbox-fade-in {
+
+
+    animation:
+    lightFade .4s ease;
+
+
 }
 
-.final-message-container p {
-    font-size: 16px;
-    color: #666;
-    font-weight: bold;
+
+
+@keyframes lightFade {
+
+
+    from {
+
+        opacity:0;
+
+    }
+
+
+    to {
+
+        opacity:1;
+
+    }
+
+
 }
+
+
+
+
+.auto-lightbox-content {
+
+
+    width:90vw;
+
+
+    height:80vh;
+
+
+    display:flex;
+
+
+    justify-content:center;
+
+
+    align-items:center;
+
+
+}
+
+
+
+.auto-lightbox-content img {
+
+
+    max-width:100%;
+
+
+    max-height:100%;
+
+
+    object-fit:contain;
+
+
+    border-radius:15px;
+
+
+    box-shadow:
+
+    0 20px 70px rgba(0,0,0,.8);
+
+
+    transition:.3s;
+
+
+}
+
+
+
 
 /* =========================================================
-   RESPONSIVE DESIGN
+   BOTONES DEL LIGHTBOX
    ========================================================= */
 
-@media (max-width: 768px) {
-    .envelope {
-        width: 250px;
-        height: 160px;
-    }
 
-    .letter-content h1 {
-        font-size: 16px;
-    }
+.auto-close-btn,
 
-    .page p {
-        font-size: 12px;
-    }
 
-    .music-control {
-        top: 10px;
-        right: 10px;
-        padding: 8px 12px;
-        font-size: 12px;
-    }
+.auto-nav-btn {
 
-    .auto-lightbox-content {
-        max-width: 90vw;
-        max-height: 80vh;
-    }
 
-    .auto-nav-btn {
-        padding: 10px 15px;
-        font-size: 18px;
-    }
+    position:absolute;
+
+
+    border:none;
+
+
+    cursor:pointer;
+
+
+    color:white;
+
+
+    background:
+    rgba(255,255,255,.2);
+
+
+    width:55px;
+
+
+    height:55px;
+
+
+    border-radius:50%;
+
+
+    font-size:25px;
+
+
+    display:flex;
+
+
+    justify-content:center;
+
+
+    align-items:center;
+
+
+    transition:.3s;
+
+
 }
 
-@media (max-width: 480px) {
-    .envelope {
-        width: 200px;
-        height: 130px;
-    }
 
-    .letter-content h1 {
-        font-size: 14px;
-        margin-bottom: 10px;
-    }
 
-    .page p {
-        font-size: 11px;
-    }
 
-    .nav-buttons button {
-        padding: 6px 10px;
-        font-size: 10px;
-    }
+.auto-close-btn:hover,
 
-    .overlay-content {
-        padding: 25px;
-    }
 
-    .overlay-content h2 {
-        font-size: 18px;
-    }
+.auto-nav-btn:hover {
+
+
+    background:
+    rgba(255,105,180,.8);
+
+
+    transform:
+    scale(1.15);
+
+
 }
+
+
+
+.auto-close-btn {
+
+
+    top:25px;
+
+
+    right:25px;
+
+
+}
+
+
+
+.auto-nav-btn.left {
+
+
+    left:25px;
+
+
+    top:50%;
+
+
+    transform:
+    translateY(-50%);
+
+
+}
+
+
+
+
+.auto-nav-btn.right {
+
+
+    right:25px;
+
+
+    top:50%;
+
+
+    transform:
+    translateY(-50%);
+
+
+}
+
+
+
+
+/* TEXTO DE LA FOTO */
+
+
+.auto-caption {
+
+
+    position:absolute;
+
+
+    bottom:30px;
+
+
+    left:50%;
+
+
+    transform:
+    translateX(-50%);
+
+
+    padding:12px 25px;
+
+
+    border-radius:20px;
+
+
+    background:
+    rgba(0,0,0,.7);
+
+
+    color:white;
+
+
+    text-align:center;
+
+
+    max-width:80%;
+
+
+}
+
+
+
+
+/* =========================================================
+   BLOQUEAR SCROLL AL ABRIR FOTO
+   ========================================================= */
+
+
+body.auto-lightbox-open {
+
+
+    overflow:hidden;
+
+
+}
+
+
+
+
+/* =========================================================
+   RESPONSIVE TABLET
+   ========================================================= */
+
+
+@media(max-width:768px){
+
+
+
+.envelope {
+
+
+    width:280px;
+
+    height:190px;
+
+
+}
+
+
+
+.letter {
+
+
+    width:255px;
+
+    height:260px;
+
+
+}
+
+
+
+.letter-content h1 {
+
+
+    font-size:18px;
+
+
+}
+
+
+
+.page p {
+
+
+    font-size:13px;
+
+
+}
+
+
+
+.music-control {
+
+
+    top:10px;
+
+
+    right:10px;
+
+
+    font-size:12px;
+
+
+    padding:10px 15px;
+
+
+}
+
+
+
+.auto-lightbox-content {
+
+
+    width:95vw;
+
+
+    height:75vh;
+
+
+}
+
+
+
+.auto-nav-btn {
+
+
+    width:45px;
+
+
+    height:45px;
+
+
+    font-size:20px;
+
+
+}
+
+
+
+}
+
+
+
+
+
+/* =========================================================
+   RESPONSIVE IPHONE
+   ========================================================= */
+
+
+@media(max-width:480px){
+
+
+
+body {
+
+
+    padding:10px;
+
+
+}
+
+
+
+.envelope {
+
+
+    width:260px;
+
+
+    height:170px;
+
+
+}
+
+
+
+.letter {
+
+
+    width:235px;
+
+
+    height:240px;
+
+
+}
+
+
+
+.letter-content h1 {
+
+
+    font-size:15px;
+
+
+}
+
+
+
+.page {
+
+
+    padding:10px;
+
+
+}
+
+
+
+.page p {
+
+
+    font-size:12px;
+
+
+    line-height:1.5;
+
+
+}
+
+
+
+.nav-buttons {
+
+
+    bottom:-50px;
+
+
+}
+
+
+
+.nav-buttons button {
+
+
+    padding:8px 12px;
+
+
+    font-size:11px;
+
+
+}
+
+
+
+.overlay-content {
+
+
+    padding:25px;
+
+
+}
+
+
+
+.overlay-content h2 {
+
+
+    font-size:18px;
+
+
+}
+
+
+
+.auto-close-btn {
+
+
+    width:45px;
+
+
+    height:45px;
+
+
+    top:15px;
+
+
+    right:15px;
+
+
+}
+
+
+
+.auto-nav-btn.left {
+
+
+    left:10px;
+
+
+}
+
+
+
+.auto-nav-btn.right {
+
+
+    right:10px;
+
+
+}
+
+
+
+.auto-caption {
+
+
+    font-size:12px;
+
+
+}
+
+
+
+}
+
+
+
 
 /* =========================================================
    ACCESIBILIDAD
    ========================================================= */
 
-body.auto-lightbox-open {
-    overflow: hidden;
-}
 
 button:focus {
-    outline: 2px solid #ff69b4;
-    outline-offset: 2px;
+
+
+    outline:
+
+    3px solid #ff69b4;
+
+
+    outline-offset:3px;
+
+
 }
