@@ -115,20 +115,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function openLightbox(index = 0) {
-        createLightbox();
-        currentIndex = index;
-        updateImage();
-        overlay.style.display = 'flex';
-        document.body.classList.add('auto-lightbox-open');
-        startAutoPlay();
-    }
 
-    function closeLightbox() {
-        if (!overlay) return;
-        stopAutoPlay();
-        overlay.style.display = 'none';
-        document.body.classList.remove('auto-lightbox-open');
-    }
+    createLightbox();
+
+    currentIndex = index;
+
+    updateImage();
+
+    overlay.classList.add("active");
+
+    document.body.classList.add('auto-lightbox-open');
+
+    startAutoPlay();
+}
+
+
+function closeLightbox(){
+
+    if(!overlay) return;
+
+    stopAutoPlay();
+
+    overlay.classList.remove("active");
+
+    document.body.classList.remove('auto-lightbox-open');
+}
 
     // Vincular al botón "Ver Fotos en Grande 💖" de la página 5
     const openBtn = document.getElementById('openGalleryBtn');
