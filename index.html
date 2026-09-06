@@ -1,125 +1,382 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <meta name="description" content="Una dedicatoria romántica interactiva para Nancy">
-    <meta property="og:title" content="Para mi hermosa esposa Nancy ❤️">
-    <meta property="og:description" content="Una dedicatoria interactiva con sobre 3D, música y mensajes románticos.">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
+
     <title>Para mi hermosa esposa Nancy ❤️</title>
+
     <link rel="stylesheet" href="css/styles.css">
+
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%92%96%3C/text%3E%3C/svg%3E">
+
 </head>
+
+
 <body>
 
-    <!-- OVERLAY INICIAL PARA INICIAR MÚSICA -->
-    <div class="music-overlay" id="musicOverlay" role="dialog" aria-modal="true" aria-labelledby="overlayTitle">
-        <div class="overlay-content">
-            <h2 id="overlayTitle">🎵 ¡Abre el sobre con música! 🎵</h2>
-            <button id="startButton">Presiona para empezar</button>
-            <button id="continueNoMusic">Continuar sin música</button>
-        </div>
+
+<!-- OVERLAY MÚSICA -->
+
+<div class="music-overlay" id="musicOverlay">
+
+    <div class="overlay-content">
+
+        <h2>
+            🎵 ¡Abre el sobre con música! 🎵
+        </h2>
+
+        <button id="startButton">
+            Presiona para empezar
+        </button>
+
+        <button id="continueNoMusic">
+            Continuar sin música
+        </button>
+
     </div>
 
-    <!-- FONDO DE GALAXIA -->
-    <div class="starfield" id="starfield" aria-hidden="true"></div>
-    <div class="nebula" aria-hidden="true"></div>
-    
-    <!-- PLANETAS -->
-    <div class="planet planet1" aria-hidden="true"></div>
-    <div class="planet planet2" aria-hidden="true"></div>
-    <div class="planet planet3" aria-hidden="true"></div>
+</div>
 
-    <!-- CONTROL DE MÚSICA -->
-    <button class="music-control" id="musicToggle" aria-pressed="false" aria-label="Alternar música">🎵 Música: OFF</button>
 
-    <!-- AUDIO -->
-    <audio id="backgroundMusic" loop playsinline autoplay muted preload="auto" controls>
-        <source src="https://github.com/bcaizales-design/Dedicatorias-rom-nticas-esposa-/raw/refs/heads/main/te%20amo%20y%20mas%20.mp3?raw=true" type="audio/mpeg">
-        <source src="https://github.com/bcaizales-design/Dedicatorias-rom-nticas-esposa-/raw/refs/heads/main/te%20amo%20y%20mas%20.mp3?raw=true" type="audio/mpeg">
-        Tu navegador no soporta audio HTML5.
-    </audio>
 
-    <!-- CONTENEDOR DEL SOBRE -->
-    <div class="envelope-wrapper" id="sobre" tabindex="0" role="button" aria-label="Sobre romántico, presiona para abrir">
-        <div class="heart-seal" aria-hidden="true"></div>
-        <div class="envelope" aria-hidden="true">
-            <div class="flap" aria-hidden="true"></div>
-            
-            <!-- CARTA CON CONTENIDO DE PÁGINAS -->
-            <div class="letter">
-                <div class="letter-content">
-                    <h1>Para mi hermosa esposa Nancy 💖</h1>
-                    
-                    <div class="pages-container">
-                        <!-- Página 1 -->
-                        <div class="page active" id="p1">
-                            <p>Cada línea de este código fue escrita pensando en ti, en nuestro hermoso camino juntos y en la hermosa familia que construimos. 🌸</p>
-                        </div>
-                        
-                        <!-- Página 2 -->
-                        <div class="page" id="p2">
-                            <p>Gracias por ser mi compañera incondicional, por llenar mis días de alegría y por amarme tanto. ¡Eres mi mundo entero! ✨</p>
-                        </div>
-                        
-                        <!-- Página 3 -->
-                        <div class="page" id="p3">
-                            <p>Te amo con todo mi corazón, hoy, mañana y para siempre. <br><br> <span class="firma-pollo">🐥 Tu pollo</span></p>
-                        </div>
+<!-- FONDO -->
 
-                        <!-- Página 4 -->
-                        <div class="page" id="p4">
-                            <p> besoteeess nalgona. <br><br> <span class="firma-pollo">🐥 Tu pollo</span></p>
-                        </div>
-                        
-                        <!-- Página 5 - Galería Automática / Lightbox -->
-                        <div class="page" id="p5">
-                            <div class="gallery-trigger-container">
-                                <p>Un recorrido por nuestras mejores memorias juntas 📸✨</p>
-                                <button id="openGalleryBtn" class="action-btn">Ver Fotos en Grande 💖</button>
-                            </div>
+<div class="starfield" id="starfield"></div>
 
-                            <!-- Sección de imágenes (fuente oculta para el Lightbox) -->
-                            <section id="auto-gallery-section" aria-label="Galería automática" data-autoplay-interval="4000" style="display: none;">
-                                <img data-full="primera imagen.jpeg" alt="Momento especial 1">
-                                <img data-full="segunda imagen.jpeg" alt="Momento especial 2">
-                                <img data-full="tercera imagen.jpeg" alt="Momento especial 3">
-                                <!-- Puedes añadir más líneas <img data-full="ruta_de_imagen.jpg" alt="descripción"> según necesites -->
-                            </section>
-                        </div>
+<div class="nebula"></div>
 
-                        <!-- Página 6 - Mensaje Final -->
-                        <div class="page" id="p6">
-                            <div class="final-message-container">
-                                <h2>Te amo chaparrita 💕</h2>
-                                <p>Por miles de momentos más juntos. 🥂</p>
-                            </div>
-                        </div>
 
-                    </div> <!-- cierre pages-container -->
-                </div>
-            </div>
-            
-            <!-- Visor de imágenes ampliadas (Lightbox interactivo) -->
-            <div class="image-viewer" id="imageViewer">
-                <span class="close-viewer" id="closeViewer">✖</span>
-                
-                <button class="viewer-btn prev-viewer" id="prevViewerBtn" aria-label="Imagen anterior">❮</button>
-                <img id="zoomImage" src="" alt="Imagen ampliada">
-                <button class="viewer-btn next-viewer" id="nextViewerBtn" aria-label="Imagen siguiente">❯</button>
-            </div>
-            
-            <!-- Botones de navegación de la carta -->
-            <div class="nav-buttons">
-                <button id="btnPrev" disabled aria-label="Página anterior">◀ Ant</button>
-                <button id="btnNext" aria-label="Página siguiente">Sig ▶</button>
-            </div>
-        </div>
-    </div>
+<div class="planet planet1"></div>
+<div class="planet planet2"></div>
+<div class="planet planet3"></div>
 
-    <script src="js/script.js"></script>
-    <script src="js/carousel.js"></script>
+
+
+<!-- CONTROL MUSICA -->
+
+<button 
+class="music-control"
+id="musicToggle"
+aria-pressed="false">
+
+🎵 Música: OFF
+
+</button>
+
+
+
+<!-- AUDIO CORREGIDO -->
+
+<audio id="backgroundMusic" loop playsinline preload="auto">
+
+    <source 
+    src="https://github.com/bcaizales-design/Dedicatorias-rom-nticas-esposa-/raw/refs/heads/main/te%20amo%20y%20mas%20.mp3?raw=true"
+    type="audio/mpeg">
+
+</audio>
+
+
+
+
+<!-- SOBRE -->
+
+<div 
+class="envelope-wrapper"
+id="sobre"
+tabindex="0"
+role="button"
+aria-label="Abrir sobre romántico">
+
+
+<div class="heart-seal"></div>
+
+
+<div class="envelope">
+
+
+<div class="flap"></div>
+
+
+
+<!-- CARTA -->
+
+<div class="letter">
+
+
+<div class="letter-content">
+
+
+<h1>
+Para mi hermosa esposa Nancy 💖
+</h1>
+
+
+
+<div class="pages-container">
+
+
+
+<!-- PAGINA 1 -->
+
+<div class="page active" id="p1">
+
+<p>
+Cada línea de este código fue escrita pensando en ti,
+en nuestro hermoso camino juntos y en la hermosa familia
+que construimos. 🌸
+</p>
+
+</div>
+
+
+
+
+<!-- PAGINA 2 -->
+
+<div class="page" id="p2">
+
+<p>
+Gracias por ser mi compañera incondicional,
+por llenar mis días de alegría y por amarme tanto.
+¡Eres mi mundo entero! ✨
+</p>
+
+</div>
+
+
+
+
+<!-- PAGINA 3 -->
+
+<div class="page" id="p3">
+
+<p>
+Te amo con todo mi corazón,
+hoy, mañana y para siempre.
+
+<br><br>
+
+<span class="firma-pollo">
+🐥 Tu pollo
+</span>
+
+</p>
+
+</div>
+
+
+
+
+<!-- PAGINA 4 -->
+
+<div class="page" id="p4">
+
+<p>
+Besoteeess nalgona ❤️
+
+<br><br>
+
+<span class="firma-pollo">
+🐥 Tu pollo
+</span>
+
+</p>
+
+</div>
+
+
+
+
+
+<!-- PAGINA 5 -->
+
+<div class="page" id="p5">
+
+
+<div class="gallery-trigger-container">
+
+
+<p>
+Un recorrido por nuestras mejores memorias 📸✨
+</p>
+
+
+<button 
+id="openGalleryBtn"
+class="action-btn">
+
+Ver Fotos en Grande 💖
+
+</button>
+
+
+</div>
+
+
+
+<section 
+id="auto-gallery-section"
+data-autoplay-interval="4000"
+style="display:none;">
+
+
+<img 
+src="primera imagen.jpeg"
+data-full="primera imagen.jpeg"
+alt="Momento especial 1">
+
+
+<img 
+src="segunda imagen.jpeg"
+data-full="segunda imagen.jpeg"
+alt="Momento especial 2">
+
+
+<img 
+src="tercera imagen.jpeg"
+data-full="tercera imagen.jpeg"
+alt="Momento especial 3">
+
+
+</section>
+
+
+
+</div>
+
+
+
+
+
+
+<!-- PAGINA 6 -->
+
+<div class="page" id="p6">
+
+
+<div class="final-message-container">
+
+<h2>
+Te amo chaparrita 💕
+</h2>
+
+
+<p>
+Por miles de momentos más juntos. 🥂
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- BOTONES -->
+
+<div class="nav-buttons">
+
+
+<button id="btnPrev" disabled>
+
+◀ Ant
+
+</button>
+
+
+
+<button id="btnNext">
+
+Sig ▶
+
+</button>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- LIGHTBOX FUERA DEL SOBRE -->
+
+<div 
+class="image-viewer"
+id="imageViewer">
+
+
+<span 
+class="close-viewer"
+id="closeViewer">
+
+✖
+
+</span>
+
+
+<button 
+class="viewer-btn prev-viewer"
+id="prevViewerBtn">
+
+❮
+
+</button>
+
+
+
+<img 
+id="zoomImage"
+src=""
+alt="Imagen ampliada">
+
+
+
+<button 
+class="viewer-btn next-viewer"
+id="nextViewerBtn">
+
+❯
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+<script src="js/script.js"></script>
+
+<script src="js/carousel.js"></script>
+
+
 </body>
+
 </html>
