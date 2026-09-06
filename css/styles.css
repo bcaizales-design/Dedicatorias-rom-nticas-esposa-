@@ -1,138 +1,593 @@
 /* =========================================================
-   CONTROLADOR AUTO LIGHTBOX (js/carousel.js)
+   ESTILOS GENERALES
    ========================================================= */
 
-document.addEventListener('DOMContentLoaded', () => {
-    const gallerySection = document.getElementById('auto-gallery-section');
-    if (!gallerySection) return;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    // Extraer rutas de imágenes y descripciones desde el HTML
-    const imagesData = Array.from(gallerySection.querySelectorAll('img')).map(img => ({
-        src: img.getAttribute('data-full') || img.src,
-        alt: img.getAttribute('alt') || ''
-    }));
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    color: #ffffff;
+}
 
-    if (imagesData.length === 0) return;
+/* =========================================================
+   FONDO DE ESTRELLAS Y EFECTOS
+   ========================================================= */
 
-    // Configuración del intervalo automático (4 segundos por defecto)
-    const intervalTime = parseInt(gallerySection.getAttribute('data-autoplay-interval')) || 4000;
-    
-    let currentIndex = 0;
-    let autoPlayTimer = null;
-    let overlay, imgElement, captionElement;
+.starfield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
 
-    // Crear la estructura DOM del Lightbox dinámicamente
-    function createLightbox() {
-        if (document.querySelector('.auto-lightbox-overlay')) return;
+.star {
+    position: absolute;
+    background: #ffffff;
+    border-radius: 50%;
+    animation: twinkle 3s infinite;
+}
 
-        overlay = document.createElement('div');
-        overlay.className = 'auto-lightbox-overlay auto-lightbox-fade-in';
-        overlay.style.display = 'none';
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
 
-        overlay.innerHTML = `
-            <button class="auto-close-btn" id="autoCloseBtn" aria-label="Cerrar visor">✖</button>
-            <button class="auto-nav-btn left" id="autoPrevBtn" aria-label="Imagen anterior">❮</button>
-            
-            <div class="auto-lightbox-content">
-                <img id="autoLightboxImg" src="" alt="">
-            </div>
-            
-            <button class="auto-nav-btn right" id="autoNextBtn" aria-label="Imagen siguiente">❯</button>
-            <div class="auto-caption" id="autoCaption"></div>
-        `;
+.nebula {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at 50% 50%, rgba(138, 43, 226, 0.1) 0%, transparent 70%);
+    z-index: 1;
+    pointer-events: none;
+}
 
-        document.body.appendChild(overlay);
+.planet {
+    position: fixed;
+    border-radius: 50%;
+    z-index: 2;
+    pointer-events: none;
+}
 
-        imgElement = document.getElementById('autoLightboxImg');
-        captionElement = document.getElementById('autoCaption');
+.planet1 {
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle at 30% 30%, #ff69b4, #ff1493);
+    top: 10%;
+    right: 5%;
+    opacity: 0.6;
+    box-shadow: 0 0 60px rgba(255, 20, 147, 0.4);
+}
 
-        // Eventos de botones
-        document.getElementById('autoCloseBtn').addEventListener('click', closeLightbox);
-        document.getElementById('autoPrevBtn').addEventListener('click', () => {
-            resetTimer();
-            prevImage();
-        });
-        document.getElementById('autoNextBtn').addEventListener('click', () => {
-            resetTimer();
-            nextImage();
-        });
+.planet2 {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle at 35% 35%, #87ceeb, #4169e1);
+    bottom: 15%;
+    left: 10%;
+    opacity: 0.5;
+    box-shadow: 0 0 40px rgba(65, 105, 225, 0.3);
+}
 
-        // Soporte para gestos táctiles (Swipe en móviles)
-        let touchStartX = 0;
-        overlay.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
+.planet3 {
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle at 40% 40%, #ffd700, #ffa500);
+    top: 50%;
+    right: 2%;
+    opacity: 0.4;
+    box-shadow: 0 0 30px rgba(255, 165, 0, 0.2);
+}
 
-        overlay.addEventListener('touchend', (e) => {
-            const touchEndX = e.changedTouches[0].screenX;
-            if (touchStartX - touchEndX > 50) {
-                resetTimer();
-                nextImage(); // Swipe izquierda -> Siguiente
-            } else if (touchEndX - touchStartX > 50) {
-                resetTimer();
-                prevImage(); // Swipe derecha -> Anterior
-            }
-        }, { passive: true });
+/* =========================================================
+   CONTENEDOR PRINCIPAL DEL SOBRE
+   ========================================================= */
+
+.envelope-wrapper {
+    position: relative;
+    z-index: 10;
+    cursor: pointer;
+    outline: none;
+}
+
+.envelope {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    transform-style: preserve-3d;
+    transition: all 0.6s ease;
+}
+
+.envelope-wrapper.open .envelope {
+    transform: rotateX(180deg);
+}
+
+.flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top center;
+    transition: transform 0.6s ease;
+    z-index: 11;
+}
+
+.envelope-wrapper.open .flap {
+    transform: rotateX(180deg);
+}
+
+.heart-seal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    z-index: 12;
+    animation: heartBeat 1.5s infinite;
+}
+
+@keyframes heartBeat {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.2); }
+}
+
+/* =========================================================
+   CARTA Y CONTENIDO
+   ========================================================= */
+
+.letter {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #fffaf0 0%, #fff5ee 100%);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.letter-content {
+    width: 95%;
+    height: 95%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    color: #333;
+}
+
+.letter-content h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #ff1493;
+}
+
+.pages-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.page {
+    display: none;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    animation: fadeIn 0.5s ease;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.page p {
+    line-height: 1.6;
+    font-size: 14px;
+    color: #555;
+}
+
+.firma-pollo {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #ff69b4;
+}
+
+/* =========================================================
+   BOTONES DE NAVEGACIÓN
+   ========================================================= */
+
+.nav-buttons {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 13;
+}
+
+.nav-buttons button {
+    padding: 8px 15px;
+    background: #ff1493;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+.nav-buttons button:hover:not(:disabled) {
+    background: #ff69b4;
+    transform: scale(1.05);
+}
+
+.nav-buttons button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* =========================================================
+   OVERLAY DE MÚSICA
+   ========================================================= */
+
+.music-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.music-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.overlay-content {
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+.overlay-content h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.overlay-content button {
+    padding: 12px 30px;
+    margin: 10px;
+    background: white;
+    color: #ff1493;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.overlay-content button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* =========================================================
+   CONTROL DE MÚSICA
+   ========================================================= */
+
+.music-control {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    background: #ff69b4;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    z-index: 99;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.music-control:hover {
+    background: #ff1493;
+    transform: scale(1.1);
+}
+
+/* =========================================================
+   AUDIO ELEMENT (OCULTO)
+   ========================================================= */
+
+audio {
+    display: none;
+}
+
+/* =========================================================
+   EMOJIS FLOTANTES
+   ========================================================= */
+
+.flotante {
+    position: fixed;
+    pointer-events: none;
+    z-index: 5;
+    animation: float-up 8s linear forwards;
+}
+
+@keyframes float-up {
+    0% {
+        bottom: -50px;
+        opacity: 1;
+    }
+    100% {
+        bottom: 100vh;
+        opacity: 0;
+        transform: translateX(var(--tx, 0px));
+    }
+}
+
+/* =========================================================
+   LIGHTBOX AUTOMÁTICO
+   ========================================================= */
+
+.auto-lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+}
+
+.auto-lightbox-overlay.auto-lightbox-fade-in {
+    animation: fadeInLightbox 0.3s ease;
+}
+
+@keyframes fadeInLightbox {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.auto-lightbox-content {
+    position: relative;
+    max-width: 80vw;
+    max-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auto-lightbox-content img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.7);
+}
+
+.auto-close-btn,
+.auto-nav-btn {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 15px 20px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    z-index: 201;
+}
+
+.auto-close-btn:hover,
+.auto-nav-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(1.1);
+}
+
+.auto-close-btn {
+    top: 20px;
+    right: 20px;
+}
+
+.auto-nav-btn.left {
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.auto-nav-btn.right {
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.auto-caption {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    max-width: 80%;
+}
+
+/* =========================================================
+   GALERÍA Y BOTONES DE ACCIÓN
+   ========================================================= */
+
+.gallery-trigger-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.action-btn {
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(255, 20, 147, 0.3);
+}
+
+.action-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(255, 20, 147, 0.5);
+}
+
+.action-btn:active {
+    transform: scale(0.95);
+}
+
+/* =========================================================
+   MENSAJE FINAL
+   ========================================================= */
+
+.final-message-container {
+    text-align: center;
+}
+
+.final-message-container h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #ff1493;
+}
+
+.final-message-container p {
+    font-size: 16px;
+    color: #666;
+    font-weight: bold;
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .envelope {
+        width: 250px;
+        height: 160px;
     }
 
-    // Mostrar imagen según el índice
-    function updateImage() {
-        if (!imgElement) return;
-        const currentData = imagesData[currentIndex];
-        
-        // Transición suave
-        imgElement.style.opacity = '0.3';
-        setTimeout(() => {
-            imgElement.src = currentData.src;
-            imgElement.alt = currentData.alt;
-            captionElement.textContent = currentData.alt;
-            imgElement.style.opacity = '1';
-        }, 150);
+    .letter-content h1 {
+        font-size: 16px;
     }
 
-    function nextImage() {
-        currentIndex = (currentIndex + 1) % imagesData.length;
-        updateImage();
+    .page p {
+        font-size: 12px;
     }
 
-    function prevImage() {
-        currentIndex = (currentIndex - 1 + imagesData.length) % imagesData.length;
-        updateImage();
+    .music-control {
+        top: 10px;
+        right: 10px;
+        padding: 8px 12px;
+        font-size: 12px;
     }
 
-    function startAutoPlay() {
-        stopAutoPlay();
-        autoPlayTimer = setInterval(nextImage, intervalTime);
+    .auto-lightbox-content {
+        max-width: 90vw;
+        max-height: 80vh;
     }
 
-    function stopAutoPlay() {
-        if (autoPlayTimer) clearInterval(autoPlayTimer);
+    .auto-nav-btn {
+        padding: 10px 15px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .envelope {
+        width: 200px;
+        height: 130px;
     }
 
-    function resetTimer() {
-        stopAutoPlay();
-        startAutoPlay();
+    .letter-content h1 {
+        font-size: 14px;
+        margin-bottom: 10px;
     }
 
-    function openLightbox(index = 0) {
-        createLightbox();
-        currentIndex = index;
-        updateImage();
-        overlay.style.display = 'flex';
-        document.body.classList.add('auto-lightbox-open');
-        startAutoPlay();
+    .page p {
+        font-size: 11px;
     }
 
-    function closeLightbox() {
-        if (!overlay) return;
-        stopAutoPlay();
-        overlay.style.display = 'none';
-        document.body.classList.remove('auto-lightbox-open');
+    .nav-buttons button {
+        padding: 6px 10px;
+        font-size: 10px;
     }
 
-    // Vincular al botón "Ver Fotos en Grande 💖" de la página 5
-    const openBtn = document.getElementById('openGalleryBtn');
-    if (openBtn) {
-        openBtn.addEventListener('click', () => openLightbox(0));
+    .overlay-content {
+        padding: 25px;
     }
-});
+
+    .overlay-content h2 {
+        font-size: 18px;
+    }
+}
+
+/* =========================================================
+   ACCESIBILIDAD
+   ========================================================= */
+
+body.auto-lightbox-open {
+    overflow: hidden;
+}
+
+button:focus {
+    outline: 2px solid #ff69b4;
+    outline-offset: 2px;
+}
