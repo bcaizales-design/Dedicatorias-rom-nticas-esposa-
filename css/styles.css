@@ -184,7 +184,10 @@
 
 /* --- CONTENEDOR PRINCIPAL 3D --- */
 .envelope-wrapper {
-    position: relative;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 300px;
     height: 200px;
     cursor: pointer;
