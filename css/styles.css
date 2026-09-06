@@ -244,21 +244,48 @@
     cursor: pointer;
 }
 
-/* --- LA CARTA SECRETA --- */
+/* --- LA CARTA SECRETA - ESTILO MEJORADO --- */
 .letter {
     position: absolute;
     bottom: 10px;
     left: 15px;
     width: 270px;
     height: 180px;
-    background-color: var(--letter-bg);
-    padding: 15px;
+    background: linear-gradient(135deg, #fef5f8 0%, #fffbfc 100%);
+    padding: 20px;
     box-sizing: border-box;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    box-shadow: 
+        0 10px 40px rgba(255, 77, 109, 0.15),
+        0 0 0 1px rgba(255, 192, 203, 0.3),
+        inset 0 1px 3px rgba(255, 255, 255, 0.8);
     z-index: 2;
     transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), z-index 0.6s, height 0.6s;
     overflow: hidden;
+    border: 2px solid rgba(255, 192, 203, 0.4);
+    position: relative;
+}
+
+.letter::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #ff85a1, transparent);
+    opacity: 0.6;
+}
+
+.letter::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #ff85a1, transparent);
+    opacity: 0.6;
 }
 
 .letter-content {
@@ -272,14 +299,21 @@
     flex-direction: column;
     justify-content: space-between;
     pointer-events: none;
+    font-family: 'Georgia', 'Garamond', serif;
+    letter-spacing: 0.3px;
+    line-height: 1.6;
 }
 
 .letter h1 {
     font-size: 16px;
-    margin: 0 0 5px 0;
-    border-bottom: 1px dashed var(--heart-color);
-    padding-bottom: 5px;
+    margin: 0 0 8px 0;
+    border-bottom: 2px solid #ff4d6d;
+    padding-bottom: 8px;
     color: #c9184a;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Trebuchet MS', sans-serif;
 }
 
 /* --- SISTEMA DE PÁGINAS --- */
@@ -300,12 +334,20 @@
     pointer-events: none;
     transition: opacity 0.3s ease;
     font-size: 13px;
-    line-height: 1.4;
+    line-height: 1.5;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     font-weight: 500;
+    padding: 0 5px;
+}
+
+.page p {
+    margin: 0;
+    color: #590d22;
+    font-family: 'Georgia', serif;
+    letter-spacing: 0.4px;
 }
 
 .page.active {
@@ -324,26 +366,38 @@
 }
 
 .nav-buttons button {
-    background-color: var(--heart-color);
+    background: linear-gradient(135deg, #ff4d6d 0%, #ff1744 100%);
     color: white;
     border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
+    padding: 8px 12px;
+    border-radius: 5px;
     cursor: pointer;
-    font-family: sans-serif;
-    font-size: 11px;
-    transition: background 0.2s;
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
     flex: 1;
     pointer-events: auto;
+    box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+    letter-spacing: 0.5px;
 }
 
 .nav-buttons button:disabled {
-    background-color: #cccccc;
+    background: linear-gradient(135deg, #cccccc 0%, #aaaaaa 100%);
     cursor: not-allowed;
+    opacity: 0.6;
+    box-shadow: none;
 }
 
 .nav-buttons button:hover:not(:disabled) {
-    background-color: #ff1744;
+    background: linear-gradient(135deg, #ff1744 0%, #d41c3a 100%);
+    box-shadow: 0 6px 20px rgba(255, 77, 109, 0.5);
+    transform: translateY(-2px);
+}
+
+.nav-buttons button:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(255, 77, 109, 0.4);
 }
 
 /* focus visible */
@@ -368,7 +422,7 @@ button:focus {
     transform: rotate(-45deg);
     z-index: 5;
     transition: transform 0.4s, opacity 0.4s;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 12px rgba(255, 77, 109, 0.4);
 }
 
 .heart-seal::before, .heart-seal::after {
@@ -378,6 +432,7 @@ button:focus {
     height: 25px;
     background-color: var(--heart-color);
     border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
 .heart-seal::before { top: -12.5px; left: 0; }
@@ -416,6 +471,9 @@ button:focus {
     font-weight: bold;
     color: #ff4d6d;
     margin-top: 5px;
+    font-style: italic;
+    font-family: 'Brush Script MT', cursive;
+    letter-spacing: 1px;
 }
 
 /* --- CONTROLES DE MÚSICA --- */
@@ -424,19 +482,27 @@ button:focus {
     top: 20px;
     right: 20px;
     z-index: 10;
-    background-color: rgba(255, 77, 109, 0.8);
+    background: linear-gradient(135deg, rgba(255, 77, 109, 0.9) 0%, rgba(255, 23, 68, 0.9) 100%);
     border: none;
     color: white;
-    padding: 10px 15px;
+    padding: 12px 18px;
     border-radius: 50px;
     cursor: pointer;
     font-size: 14px;
-    transition: background-color 0.3s;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+    letter-spacing: 0.5px;
 }
 
 .music-control:hover {
-    background-color: rgba(255, 77, 109, 1);
+    background: linear-gradient(135deg, rgba(255, 77, 109, 1) 0%, rgba(255, 23, 68, 1) 100%);
+    box-shadow: 0 6px 25px rgba(255, 77, 109, 0.6);
+    transform: scale(1.05);
+}
+
+.music-control:active {
+    transform: scale(0.98);
 }
 
 /* --- OVERLAY INICIAL --- */
@@ -455,44 +521,65 @@ button:focus {
 }
 
 .overlay-content {
-    background-color: white;
-    padding: 30px;
-    border-radius: 15px;
+    background: linear-gradient(135deg, #ffffff 0%, #fff5f7 100%);
+    padding: 40px;
+    border-radius: 20px;
     text-align: center;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 192, 203, 0.3);
+    max-width: 400px;
 }
 
 .overlay-content h2 {
     color: #590d22;
-    margin-bottom: 20px;
-    font-size: 20px;
+    margin-bottom: 25px;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
 .overlay-content .buttons {
     display: flex;
-    gap: 12px;
+    gap: 15px;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .overlay-content button {
-    background-color: #ff4d6d;
+    background: linear-gradient(135deg, #ff4d6d 0%, #ff1744 100%);
     color: white;
     border: none;
-    padding: 12px 18px;
+    padding: 14px 24px;
     border-radius: 8px;
     cursor: pointer;
     font-size: 15px;
-}
-
-.overlay-content button.secondary {
-    background-color: #cccccc;
-    color: #333333;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+    letter-spacing: 0.5px;
+    flex: 1;
 }
 
 .overlay-content button:hover {
-    opacity: 0.95;
+    background: linear-gradient(135deg, #ff1744 0%, #d41c3a 100%);
+    box-shadow: 0 6px 25px rgba(255, 77, 109, 0.5);
+    transform: translateY(-2px);
+}
+
+.overlay-content button.secondary {
+    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+    color: #333333;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.overlay-content button.secondary:hover {
+    background: linear-gradient(135deg, #e0e0e0 0%, #cccccc 100%);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.overlay-content button:active {
+    transform: translateY(0);
 }
 
 .music-overlay.hidden {
