@@ -36,15 +36,8 @@
     <button class="music-control" id="musicToggle" aria-pressed="false" aria-label="Alternar música">🎵 Música: OFF</button>
 
     <!-- AUDIO -->
-    <!--
-      - playsinline + autoplay muted permite un autoplay silenciado en muchos navegadores.
-      - preload="auto" ayuda a que el navegador descargue el audio con antelación.
-      - añadimos una fuente de respaldo pública para pruebas si el archivo local no existe.
-      - añadimos "controls" para permitir reproducción manual si el autoplay/gesto falla.
-    -->
     <audio id="backgroundMusic" loop playsinline autoplay muted preload="auto" controls>
         <source src="https://github.com/bcaizales-design/Dedicatorias-rom-nticas-esposa-/raw/refs/heads/main/te%20amo%20y%20mas%20.mp3?raw=true" type="audio/mpeg">
-        <!-- Fuente de respaldo pública: cámbiala por tu MP3 si prefieres -->
         <source src="https://github.com/bcaizales-design/Dedicatorias-rom-nticas-esposa-/raw/refs/heads/main/te%20amo%20y%20mas%20.mp3?raw=true" type="audio/mpeg">
         Tu navegador no soporta audio HTML5.
     </audio>
@@ -81,47 +74,44 @@
                             <p> besoteeess nalgona. <br><br> <span class="firma-pollo">🐥 Tu pollo</span></p>
                         </div>
                         
-                        <!-- Página 5 - Carrusel de Imágenes -->
+                        <!-- Página 5 - Galería Automática / Lightbox -->
                         <div class="page" id="p5">
-                            <div class="carousel-container">
-                                <div class="carousel-wrapper">
-                                    <div class="carousel-slide">
-                                        <img src="primera imagen.jpeg" alt="Momento especial 1" class="carousel-img">
-                                    </div>
-                                    <div class="carousel-slide">
-                                        <img src="segunda imagen.jpeg" alt="Momento especial 2" class="carousel-img">
-                                    </div>
-                                    <div class="carousel-slide">
-                                        <img src="tercera imagen.jpeg" alt="Momento especial 3" class="carousel-img">
-                                    </div>
-                                    <div class="carousel-slide final-message">
-                                        <div class="message-content">
-                                            <h2>Te amo chaparrita 💕</h2>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Indicadores del carrusel -->
-                                <div class="carousel-indicators" id="carouselIndicators"></div>
-                                
-                                <!-- Controles del carrusel -->
-                                <div class="carousel-controls">
-                                    <button class="carousel-btn prev-btn" id="carouselPrev" aria-label="Imagen anterior">❮</button>
-                                    <button class="carousel-btn next-btn" id="carouselNext" aria-label="Imagen siguiente">❯</button>
-                                </div>
+                            <div class="gallery-trigger-container">
+                                <p>Un recorrido por nuestras mejores memorias juntas 📸✨</p>
+                                <button id="openGalleryBtn" class="action-btn">Ver Fotos en Grande 💖</button>
+                            </div>
+
+                            <!-- Sección de imágenes (fuente oculta para el Lightbox) -->
+                            <section id="auto-gallery-section" aria-label="Galería automática" data-autoplay-interval="4000" style="display: none;">
+                                <img data-full="primera imagen.jpeg" alt="Momento especial 1">
+                                <img data-full="segunda imagen.jpeg" alt="Momento especial 2">
+                                <img data-full="tercera imagen.jpeg" alt="Momento especial 3">
+                                <!-- Puedes añadir más líneas <img data-full="ruta_de_imagen.jpg" alt="descripción"> según necesites -->
+                            </section>
+                        </div>
+
+                        <!-- Página 6 - Mensaje Final -->
+                        <div class="page" id="p6">
+                            <div class="final-message-container">
+                                <h2>Te amo chaparrita 💕</h2>
+                                <p>Por miles de momentos más juntos. 🥂</p>
                             </div>
                         </div>
+
                     </div> <!-- cierre pages-container -->
                 </div>
             </div>
             
-            <!-- Visor de imagen ampliada -->
+            <!-- Visor de imágenes ampliadas (Lightbox interactivo) -->
             <div class="image-viewer" id="imageViewer">
-                <span class="close-viewer">✖</span>
+                <span class="close-viewer" id="closeViewer">✖</span>
+                
+                <button class="viewer-btn prev-viewer" id="prevViewerBtn" aria-label="Imagen anterior">❮</button>
                 <img id="zoomImage" src="" alt="Imagen ampliada">
+                <button class="viewer-btn next-viewer" id="nextViewerBtn" aria-label="Imagen siguiente">❯</button>
             </div>
             
-            <!-- Botones de navegación -->
+            <!-- Botones de navegación de la carta -->
             <div class="nav-buttons">
                 <button id="btnPrev" disabled aria-label="Página anterior">◀ Ant</button>
                 <button id="btnNext" aria-label="Página siguiente">Sig ▶</button>
