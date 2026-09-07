@@ -446,3 +446,75 @@ document.addEventListener('DOMContentLoaded', () => {
 console.log(
 "Carousel Lightbox automático cargado correctamente"
 );
+
+
+// =========================================================
+// MÓDULO: Control del overlay inicial de música
+// =========================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+  const overlay = document.getElementById('musicOverlay');
+  const startBtn = document.getElementById('startButton');
+  const continueBtn = document.getElementById('continueNoMusic');
+  const musicToggle = document.getElementById('musicToggle');
+  const bgAudio = document.getElementById('backgroundMusic');
+  const envelope = document.getElementById('sobre');
+
+  if (!overlay) return;
+
+  function updateMusicUI(isPlaying) {
+    if (!musicToggle) return;
+    musicToggle.setAttribute('aria-pressed', isPlaying ? 'true' : 'false');
+    musicToggle.textContent = isPlaying ? '🎵 Música: ON' : '🎵 Música: OFF';
+  }
+
+  function hideOverlay(playMusic) {
+    overlay.classList.add('hidden');
+    overlay.setAttribute('aria-hidden', 'true');
+
+    // Devolver foco al sobre para que sea interactuable inmediatamente
+    if (envelope) envelope.focus();
+
+    if (playMusic && bgAudio) {
+      const playPromise = bgAudio.play();
+      if (playPromise && typeof playPromise.then === 'function') {
+        playPromise.catch(err => {
+          // La reproducción pudo fallar por políticas del navegador; actualizar UI igual.
+          console.warn('No se pudo iniciar la reproducción automática:', err);
+          updateMusicUI(false);
+        });
+      }
+      updateMusicUI(true);
+    } else if (bgAudio) {
+      bgAudio.pause();
+      bgAudio.currentTime = 0;
+      updateMusicUI(false);
+    }
+  }
+
+  if (startBtn) {
+    startBtn.addEventListener('click', () => hideOverlay(true));
+  }
+  if (continueBtn) {
+    continueBtn.addEventListener('click', () => hideOverlay(false));
+  }
+
+  // Toggle manual de música desde el botón superior
+  if (musicToggle && bgAudio) {
+    musicToggle.addEventListener('click', () => {
+      if (bgAudio.paused) {
+        const playPromise = bgAudio.play();
+        if (playPromise && typeof playPromise.then === 'function') {
+          playPromise.catch(err => {
+            console.warn('Error al reproducir audio:', err);
+            updateMusicUI(false);
+          });
+        }
+        updateMusicUI(true);
+      } else {
+        bgAudio.pause();
+        updateMusicUI(false);
+      }
+    });
+  }
+});
